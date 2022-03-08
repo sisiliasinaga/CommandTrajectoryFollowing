@@ -1,0 +1,156 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://wheelchair.gd" type="Script" id=1]
+[ext_resource path="res://rosco_color.jpg" type="Texture" id=3]
+[ext_resource path="res://curved_path_col.gd" type="Script" id=4]
+
+[node name="TrajectoryFollowing" type="Node"]
+
+[node name="path_color" type="Polygon2D" parent="."]
+polygon = PoolVector2Array( 0, 0, 600, 0, 600, 600, 500, 500, 500, 100, 100, 100 )
+
+[node name="back_path_color" type="Polygon2D" parent="path_color"]
+color = Color( 0.0666667, 0.164706, 0.956863, 1 )
+polygon = PoolVector2Array( 0, 0, 0, 600, 600, 600, 500, 500, 100, 500, 100, 100 )
+
+[node name="turn_color1" type="Polygon2D" parent="path_color"]
+position = Vector2( 550, 550 )
+color = Color( 0.407843, 0.639216, 0.698039, 1 )
+offset = Vector2( -75, -75 )
+polygon = PoolVector2Array( 0, 0, 150, 0, 150, 150, 0, 150 )
+
+[node name="turn_color2" type="Polygon2D" parent="path_color"]
+position = Vector2( 550, 50 )
+color = Color( 0.407843, 0.639216, 0.698039, 1 )
+offset = Vector2( -75, -75 )
+polygon = PoolVector2Array( 0, 0, 150, 0, 150, 150, 0, 150 )
+
+[node name="turn_color3" type="Polygon2D" parent="path_color"]
+position = Vector2( 50, 50 )
+color = Color( 0.407843, 0.639216, 0.698039, 1 )
+offset = Vector2( -75, -75 )
+polygon = PoolVector2Array( 0, 0, 150, 0, 150, 150, 0, 150 )
+
+[node name="turn_color4" type="Polygon2D" parent="path_color"]
+position = Vector2( 50, 550 )
+color = Color( 0.407843, 0.639216, 0.698039, 1 )
+offset = Vector2( -75, -75 )
+polygon = PoolVector2Array( 0, 0, 150, 0, 150, 150, 0, 150 )
+
+[node name="path_area" type="Area2D" parent="."]
+
+[node name="path" type="CollisionPolygon2D" parent="path_area"]
+position = Vector2( 0.840942, 0 )
+polygon = PoolVector2Array( 0, 0, 600, 0, 600, 600, 500, 500, 500, 100, 100, 100 )
+
+[node name="back_path" type="CollisionPolygon2D" parent="path_area"]
+polygon = PoolVector2Array( 0, 0, 0, 600, 600, 600, 500, 500, 100, 500, 100, 100 )
+
+[node name="turn1" type="CollisionPolygon2D" parent="path_area"]
+position = Vector2( 475, 475 )
+polygon = PoolVector2Array( 0, 0, 150, 0, 150, 150, 0, 150 )
+
+[node name="turn2" type="CollisionPolygon2D" parent="path_area"]
+position = Vector2( 475, -25 )
+polygon = PoolVector2Array( 0, 0, 150, 0, 150, 150, 0, 150 )
+
+[node name="turn3" type="CollisionPolygon2D" parent="path_area"]
+position = Vector2( -25, -25 )
+polygon = PoolVector2Array( 0, 0, 150, 0, 150, 150, 0, 150 )
+
+[node name="turn4" type="CollisionPolygon2D" parent="path_area"]
+position = Vector2( -25, 475 )
+polygon = PoolVector2Array( 0, 0, 150, 0, 150, 150, 0, 150 )
+
+[node name="wheelchair" type="Area2D" parent="."]
+position = Vector2( 40, 50 )
+z_index = 1
+script = ExtResource( 1 )
+
+[node name="wheelchair_base" type="Polygon2D" parent="wheelchair"]
+position = Vector2( -40, -50 )
+color = Color( 0.996078, 0.729412, 0.317647, 1 )
+polygon = PoolVector2Array( 0, 0, 80, 0, 80, 100, 0, 100 )
+
+[node name="wheelchair_tip" type="Polygon2D" parent="wheelchair"]
+position = Vector2( -40, -50 )
+color = Color( 0.8, 0.117647, 0.117647, 1 )
+polygon = PoolVector2Array( 80, 100, 40, 120, 0, 100 )
+
+[node name="wheelchair_area" type="CollisionPolygon2D" parent="wheelchair"]
+position = Vector2( -40, -50 )
+polygon = PoolVector2Array( 0, 0, 80, 0, 80, 100, 40, 120, 0, 100 )
+
+[node name="Sprite" type="Sprite" parent="wheelchair"]
+visible = false
+position = Vector2( -0.179977, 0.521118 )
+scale = Vector2( 0.153835, 0.197667 )
+texture = ExtResource( 3 )
+
+[node name="Camera2D" type="Camera2D" parent="wheelchair"]
+position = Vector2( 40, 50 )
+rotation = -3.14159
+rotating = true
+current = true
+zoom = Vector2( 0.5, 0.5 )
+
+[node name="direction_label" type="Label" parent="wheelchair/Camera2D"]
+margin_left = 156.317
+margin_top = -20.0
+margin_right = 203.317
+margin_bottom = -5.99997
+text = "forward"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="direction_arrow" type="Polygon2D" parent="wheelchair"]
+position = Vector2( -138.959, 136.29 )
+scale = Vector2( 0.8, 0.8 )
+color = Color( 0.27451, 0.952941, 0.0588235, 1 )
+offset = Vector2( 0, -75 )
+polygon = PoolVector2Array( 20, 0, 20, 100, 50, 80, 50, 120, 0, 150, -50, 120, -50, 80, -20, 100, -20, 0 )
+
+[node name="BackButton" type="Button" parent="wheelchair"]
+margin_left = -115.0
+margin_right = -65.0
+margin_bottom = 50.0
+rect_rotation = 180.0
+text = "Back"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="collision_area" type="Area2D" parent="."]
+
+[node name="center_collision" type="CollisionPolygon2D" parent="collision_area"]
+polygon = PoolVector2Array( 465, 490, 465, 465, 490, 465, 490, 135, 465, 135, 465, 110, 135, 110, 135, 135, 110, 135, 110, 465, 135, 465, 135, 490 )
+
+[node name="outside_1" type="CollisionPolygon2D" parent="collision_area"]
+polygon = PoolVector2Array( -35, 635, 135, 635, 135, 610, 465, 610, 465, 635, 635, 635, 635, 465, 610, 465, 610, 135, 635, 135, 635, -35, 1200, -500, 1200, 1000, -625, 1000 )
+
+[node name="outside_2" type="CollisionPolygon2D" parent="collision_area"]
+polygon = PoolVector2Array( 1200, -500, -625, -500, -625, 1000, -35, 635, -35, 465, -10, 465, -10, 135, -35, 135, -35, -35, 135, -35, 135, -10, 465, -10, 465, -35, 635, -35 )
+
+[node name="curve_collision_area" type="Area2D" parent="."]
+
+[node name="curve_1" type="CollisionPolygon2D" parent="curve_collision_area"]
+position = Vector2( 550, 550 )
+script = ExtResource( 4 )
+
+[node name="curve_2" type="CollisionPolygon2D" parent="curve_collision_area/curve_1"]
+position = Vector2( 1664, 0 )
+rotation = -3.14159
+script = ExtResource( 4 )
+
+[node name="finish" type="Polygon2D" parent="curve_collision_area/curve_1"]
+position = Vector2( 1650, 0 )
+rotation = 0.261799
+color = Color( 0.407843, 0.639216, 0.698039, 1 )
+offset = Vector2( -75, -75 )
+polygon = PoolVector2Array( 0, 0, 150, 0, 150, 150, 0, 150 )
+[connection signal="pressed" from="wheelchair/BackButton" to="wheelchair" method="_on_BackButton_pressed"]
+[connection signal="area_entered" from="collision_area" to="wheelchair" method="_on_collision_area_area_entered"]
+[connection signal="area_exited" from="collision_area" to="wheelchair" method="_on_collision_area_area_exited"]
+[connection signal="area_entered" from="curve_collision_area" to="wheelchair" method="_on_curve_collision_area_area_entered"]
+[connection signal="area_exited" from="curve_collision_area" to="wheelchair" method="_on_curve_collision_area_area_exited"]

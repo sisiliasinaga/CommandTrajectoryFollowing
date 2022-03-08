@@ -1,0 +1,176 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://black_background.jpg" type="Texture" id=1]
+[ext_resource path="res://CommandFollowingMenu.gd" type="Script" id=2]
+[ext_resource path="res://commandfollowingbuttons.tres" type="ButtonGroup" id=3]
+
+[node name="CommandFollowingMenu" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="NinePatchRect" type="NinePatchRect" parent="."]
+margin_left = 312.0
+margin_top = 37.5
+margin_right = 712.0
+margin_bottom = 562.5
+texture = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="NinePatchRect"]
+margin_left = 35.0
+margin_top = 60.0
+margin_right = 365.0
+margin_bottom = 480.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="CommandFollowingSettings" type="Label" parent="NinePatchRect/VBoxContainer"]
+margin_right = 330.0
+margin_bottom = 14.0
+text = "Command Following Settings"
+align = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="NinePatchRect/VBoxContainer"]
+margin_top = 18.0
+margin_right = 330.0
+margin_bottom = 63.0
+rect_min_size = Vector2( 330, 45 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Repetitions" type="Label" parent="NinePatchRect/VBoxContainer"]
+margin_top = 67.0
+margin_right = 330.0
+margin_bottom = 81.0
+text = "Number of command repetitions"
+
+[node name="RepetitionsInput" type="LineEdit" parent="NinePatchRect/VBoxContainer"]
+margin_top = 85.0
+margin_right = 330.0
+margin_bottom = 109.0
+
+[node name="MarginContainer2" type="MarginContainer" parent="NinePatchRect/VBoxContainer"]
+margin_top = 113.0
+margin_right = 330.0
+margin_bottom = 133.0
+rect_min_size = Vector2( 0, 20 )
+
+[node name="CommandsTerminate" type="Label" parent="NinePatchRect/VBoxContainer"]
+margin_top = 137.0
+margin_right = 330.0
+margin_bottom = 151.0
+text = "Total number of commands"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="CommandsTerminateInput" type="LineEdit" parent="NinePatchRect/VBoxContainer"]
+margin_top = 155.0
+margin_right = 330.0
+margin_bottom = 179.0
+
+[node name="MarginContainer3" type="MarginContainer" parent="NinePatchRect/VBoxContainer"]
+margin_top = 183.0
+margin_right = 330.0
+margin_bottom = 203.0
+rect_min_size = Vector2( 0, 20 )
+
+[node name="CommandDuration" type="Label" parent="NinePatchRect/VBoxContainer"]
+margin_top = 207.0
+margin_right = 330.0
+margin_bottom = 221.0
+text = "Command duration"
+
+[node name="MinTime" type="HBoxContainer" parent="NinePatchRect/VBoxContainer"]
+margin_top = 225.0
+margin_right = 330.0
+margin_bottom = 249.0
+
+[node name="MinLabel" type="Label" parent="NinePatchRect/VBoxContainer/MinTime"]
+margin_top = 5.0
+margin_right = 66.0
+margin_bottom = 19.0
+text = "Min time: "
+
+[node name="MinTimeInput" type="LineEdit" parent="NinePatchRect/VBoxContainer/MinTime"]
+margin_left = 70.0
+margin_right = 128.0
+margin_bottom = 24.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MaxTime" type="HBoxContainer" parent="NinePatchRect/VBoxContainer"]
+margin_top = 253.0
+margin_right = 330.0
+margin_bottom = 277.0
+
+[node name="MaxLabel" type="Label" parent="NinePatchRect/VBoxContainer/MaxTime"]
+margin_top = 5.0
+margin_right = 68.0
+margin_bottom = 19.0
+text = "Max time: "
+
+[node name="MaxTimeInput" type="LineEdit" parent="NinePatchRect/VBoxContainer/MaxTime"]
+margin_left = 72.0
+margin_right = 130.0
+margin_bottom = 24.0
+
+[node name="MarginContainer4" type="MarginContainer" parent="NinePatchRect/VBoxContainer"]
+margin_top = 281.0
+margin_right = 330.0
+margin_bottom = 301.0
+rect_min_size = Vector2( 0, 20 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MagDir" type="Label" parent="NinePatchRect/VBoxContainer"]
+margin_top = 305.0
+margin_right = 330.0
+margin_bottom = 319.0
+text = "Magnitude and Direction Settings"
+
+[node name="CheckBox" type="CheckBox" parent="NinePatchRect/VBoxContainer"]
+margin_top = 323.0
+margin_right = 330.0
+margin_bottom = 347.0
+group = ExtResource( 3 )
+text = "Direction only"
+
+[node name="CheckBox2" type="CheckBox" parent="NinePatchRect/VBoxContainer"]
+margin_top = 351.0
+margin_right = 330.0
+margin_bottom = 375.0
+group = ExtResource( 3 )
+text = "Magnitude and Direction"
+
+[node name="MarginContainer5" type="MarginContainer" parent="NinePatchRect/VBoxContainer"]
+margin_top = 379.0
+margin_right = 330.0
+margin_bottom = 409.0
+rect_min_size = Vector2( 0, 30 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Button" type="Button" parent="NinePatchRect/VBoxContainer"]
+margin_top = 413.0
+margin_right = 330.0
+margin_bottom = 433.0
+text = "Enter"
+[connection signal="text_changed" from="NinePatchRect/VBoxContainer/RepetitionsInput" to="." method="_on_RepetitionsInput_text_changed"]
+[connection signal="text_changed" from="NinePatchRect/VBoxContainer/CommandsTerminateInput" to="." method="_on_CommandsTerminateInput_text_changed"]
+[connection signal="text_changed" from="NinePatchRect/VBoxContainer/MinTime/MinTimeInput" to="." method="_on_MinTimeInput_text_changed"]
+[connection signal="text_changed" from="NinePatchRect/VBoxContainer/MaxTime/MaxTimeInput" to="." method="_on_MaxTimeInput_text_changed"]
+[connection signal="toggled" from="NinePatchRect/VBoxContainer/CheckBox" to="." method="_on_CheckBox_toggled"]
+[connection signal="toggled" from="NinePatchRect/VBoxContainer/CheckBox2" to="." method="_on_CheckBox2_toggled"]
+[connection signal="pressed" from="NinePatchRect/VBoxContainer/Button" to="." method="_on_Button_pressed"]
