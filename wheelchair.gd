@@ -4,26 +4,100 @@ const SQLite = preload("res://addons/godot-sqlite/bin/gdsqlite.gdns")
 var db
 var db_name = "res://UserDataStore/userdatabase"
 
+# Constants to determine max speeds
 var rotation_speed = 0.01
 var forward_speed = 0.8
+
+# Part of the original code to generate the paths
 var past_first_block = false  #used for final instructions (i.e. stop)
 var on_curved_path = false
 
+# Variables to calculate elapsed times
 var time_start = 0.0
 var time_now = 0.0
+
+# Variables to calculate amount of time spent and number of times out of bounds
 var time_exit = 0.0
 var time_enter = 0.0
 var nBB = 0
 var time_outside = 0.0
 
+# Variables to store the x and y inputs from the joystick
 var inpx = 0.0
 var inpy = 0.0
-var max_speed = 0.0
+var curr_x_speed = 0.0
+var curr_y_speed = 0.0
+
+# Variables for calculating average speed
+# Following dictionaries are for storing average speeds over each segment
+var avg_speeds = {}
+var avg_x_speeds = {}
+var avg_y_speeds = {}
+var avg_rot_speeds = {}
+
+# Flag for if the wheelchair has started moving or not
+# This is used to know when t=0 for calculating elapsed time should start
+var started_moving = false
+
+# Variables for calculating elapsed time over each portion of the track
+var interval_start = 0.0
+var interval_end = 0.0
+var last_avg_speed = 0.0
+var avg_rot_speed = 0.0
+var x_speed = 0.0
+var y_speed = 0.0
+var start_x = 0.0
+var start_y = 0.0
+var start_rot = 0.0
+var end_x = 0.0
+var end_y = 0.0
+var end_rot = 0.0
+
+# Boolean variables for determining when to calculate average speeds
+# Booleans for straight paths
+var turn1 = false
+var turn2 = false
+var turn3 = false
+var turn4 = false
+var path1 = false
+var path2 = false
+var path3 = false
+var path4 = false
+
+# Booleans for curved path
+var curve1 = false
+var curve2 = false
+var curve3 = false
+var curve4 = false
+
+# Variables to hold necessary values for calculating dimensionless jerk
+var v_peaks = []
+var curr_v_peak = 0.0
+var curr_speed = 0.0
+# Speed dicts go time : speed in ms
+var v_speed_1 = {}
+var v_speed_2 = {}
+var v_speed_3 = {}
+var v_speed_4 = {}
+var v_speed_curve = {}
+# Accel dicts go time : accel in ms
+var accel_1 = {}
+var accel_2 = {}
+var accel_3 = {}
+var accel_4 = {}
+var accel_curve = {}
+# Jerk dicts go time : jerk in ms
+var jerk_1 = {}
+var jerk_2 = {}
+var jerk_3 = {}
+var jerk_4 = {}
+var jerk_curve = {}
 
 # var input_type = "keyboard"
 var input_type = "controller"
 
 func _ready():
+	# Initial x and y positions and rotation of wheelchair
 	position.x = 550
 	position.y = 550
 	rotation = PI
@@ -31,21 +105,55 @@ func _ready():
 	
 	db = SQLite.new()
 	db.path = db_name
+	
+	# Initialize the start time
 	time_start = OS.get_ticks_msec()
+	
+	start_x = position.x
+	start_y = position.y
 	
 	# global_translate(Vector2(40, 50))
 
 func _process(delta):
 	if input_type == "keyboard":
+		# Store x and y inputs as 0 or 1 values based off arrow keys
 		inpx = (int(Input.is_action_pressed("ui_right")) - int(Input.is_action_pressed("ui_left")))
 		inpy = (int(Input.is_action_pressed("ui_down")) - int(Input.is_action_pressed("ui_up")))
 	else:
+		# If using a controller, get the joystick positions for x and y
 		inpx = Input.get_action_strength("ui_right") - Input.get_action_strength("ui_left")
 		inpy = Input.get_action_strength("ui_down") - Input.get_action_strength("ui_up")
+	# If the joystick is moved for the first time
+	if (inpx != 0 or inpy != 0) and started_moving == false:
+		# Start the timer for the interval and change the started_moving flag
+		started_moving = true
+		interval_start = OS.get_ticks_msec()
 	var angle  = rotation-PI/2
-	position.x += forward_speed*inpy*cos(angle)
-	position.y += forward_speed*inpy*sin(angle)
+	
+	# Update the wheelchair's position and rotation based off joystick
+	curr_x_speed = forward_speed*inpy*cos(angle)
+	curr_y_speed = forward_speed*inpy*sin(angle)
+	position.x += curr_x_speed
+	position.y += curr_y_speed
 	rotation += rotation_speed*inpx
+	
+	# Update the current v_peak as necessary
+	curr_speed = sqrt(pow(curr_x_speed, 2) + pow(curr_y_speed, 2))
+	if curr_speed > curr_v_peak:
+		curr_v_peak = curr_speed
+	
+	# Add to dict of speeds to eventually calculate jerks
+	if !path1:
+		v_speed_1[OS.get_ticks_msec()] = curr_speed
+	elif turn1 and !path2:
+		v_speed_2[OS.get_ticks_msec()] = curr_speed
+	elif turn2 and !path3:
+		v_speed_3[OS.get_ticks_msec()] = curr_speed
+	elif turn3 and !path4:
+		v_speed_4[OS.get_ticks_msec()] = curr_speed
+	elif turn4 and !curve4:
+		v_speed_curve[OS.get_ticks_msec()] = curr_speed
+	
 	change_display_directions()
 	
 func change_display_directions():
@@ -60,40 +168,131 @@ func change_display_directions():
 	var right_heading = -PI/2
 	var down_heading = 0
 	var rot = wrap_pi(rotation)
-	# print("X:", position.x)
-	# print("Y:", position.y)
+	
 	# FIRST TURN BLOCK
 	if position.x < (right_x-left_x)/2:
 		past_first_block = true
 	if abs(position.x - right_x) <pos_tol and abs(position.y-top_y) <pos_tol and abs(up_heading - abs(rot)) < rot_tol :   #the abs(rot) only needed for up_heading
 		$direction_arrow.set_rotation(-PI/2)
 		$Camera2D/direction_label.set_text("Left")
+		if !path1:
+			# Get the time that the user ended this interval
+			interval_end = OS.get_ticks_msec()
+			
+			# Get the exact position where the user ends this portion of the track
+			end_x = position.x
+			end_y = position.y
+			
+			# Calculate the x, y, and total avg speeds
+			x_speed = calc_avg_dir_speed(interval_start, interval_end, start_x, end_x)
+			y_speed = calc_avg_dir_speed(interval_start, interval_end, start_y, end_y)
+			last_avg_speed = calc_avg_speed(interval_start, interval_end, start_x, start_y, end_x, end_y)
+			
+			# Add these speeds to respective dictionaries
+			avg_speeds["path1"] = Vector2(last_avg_speed, interval_end-interval_start)
+			avg_x_speeds["path1"] = Vector2(x_speed, interval_end-interval_start)
+			avg_y_speeds["path1"] = Vector2(y_speed, interval_end-interval_start)
+			start_rot = rotation
+			path1 = true
 		# print("Left")
 	if abs(position.x - right_x) <pos_tol and abs(position.y-top_y) <pos_tol and abs(left_heading - rot) < rot_tol :
 		$direction_arrow.set_rotation(0)
 		$Camera2D/direction_label.set_text("Forward")
-		#past_first_block = true
-		# print("Forward")
+		if !turn1:
+			interval_start = OS.get_ticks_msec()
+			start_x = position.x
+			start_y = position.y
+			end_rot = rotation
+			avg_rot_speed = calc_avg_dir_speed(interval_end, interval_start, start_rot, end_rot)
+			avg_rot_speeds["turn1"] = Vector2(avg_rot_speed, interval_start-interval_end)
+			print("Turn 1 speed: " + str(avg_rot_speed))
+			# print("Forward")
+			turn1 = true
 	# SECOND TURN BLOCK
 	if abs(position.x - left_x) <pos_tol and abs(position.y-top_y) <pos_tol and abs(left_heading - rot) < rot_tol :
 		$direction_arrow.set_rotation(PI/2)
 		$Camera2D/direction_label.set_text("Right")
+		if !path2:
+			interval_end = OS.get_ticks_msec()
+			end_x = position.x
+			end_y = position.y
+			x_speed = calc_avg_dir_speed(interval_start, interval_end, start_x, end_x)
+			y_speed = calc_avg_dir_speed(interval_start, interval_end, start_y, end_y)
+			last_avg_speed = calc_avg_speed(interval_start, interval_end, start_x, start_y, end_x, end_y)
+			avg_speeds["path2"] = Vector2(last_avg_speed, interval_end-interval_start)
+			avg_x_speeds["path2"] = Vector2(x_speed, interval_end-interval_start)
+			avg_y_speeds["path2"] = Vector2(y_speed, interval_end-interval_start)
+			print("Path 2 speed: " + str(last_avg_speed))
+			start_rot = rotation
+			path2 = true
 	if abs(position.x - left_x) <pos_tol and abs(position.y-top_y) <pos_tol and abs(up_heading - abs(rot)) < rot_tol :
 		$direction_arrow.set_rotation(-PI)
 		$Camera2D/direction_label.set_text("Backward")
+		if !turn2:
+			interval_start = OS.get_ticks_msec()
+			start_x = position.x
+			start_y = position.y
+			end_rot = rotation
+			avg_rot_speed = calc_avg_dir_speed(interval_end, interval_start, start_rot, end_rot)
+			avg_rot_speeds["turn2"] = Vector2(avg_rot_speed, interval_start-interval_end)
+			print("Turn 2 speed: " + str(avg_rot_speed))
+			turn2 = true
 	## 3rd TURN BLOCK
 	if abs(position.x - left_x) <pos_tol and abs(position.y-bot_y) <pos_tol and abs(up_heading - abs(rot)) < rot_tol :
 		$direction_arrow.set_rotation(-PI/2)
 		$Camera2D/direction_label.set_text("Left")
+		if !path3:
+			interval_end = OS.get_ticks_msec()
+			end_x = position.x
+			end_y = position.y
+			x_speed = calc_avg_dir_speed(interval_start, interval_end, start_x, end_x)
+			y_speed = calc_avg_dir_speed(interval_start, interval_end, start_y, end_y)
+			last_avg_speed = calc_avg_speed(interval_start, interval_end, start_x, start_y, end_x, end_y)
+			avg_speeds["path3"] = Vector2(last_avg_speed, interval_end-interval_start)
+			avg_x_speeds["path3"] = Vector2(x_speed, interval_end-interval_start)
+			avg_y_speeds["path3"] = Vector2(y_speed, interval_end-interval_start)
+			print("Path 3 speed: " + str(last_avg_speed))
+			start_rot = rotation
+			path3 = true
 	if abs(position.x - left_x) <pos_tol and abs(position.y-bot_y) <pos_tol and abs(left_heading - rot) < rot_tol :
 		$direction_arrow.set_rotation(-PI)
 		$Camera2D/direction_label.set_text("Backward")
+		if !turn3:
+			interval_start = OS.get_ticks_msec()
+			start_x = position.x
+			start_y = position.y
+			end_rot = rotation
+			avg_rot_speed = calc_avg_dir_speed(interval_end, interval_start, start_rot, end_rot)
+			avg_rot_speeds["turn3"] = Vector2(avg_rot_speed, interval_start-interval_end)
+			print("Turn 3 speed: " + str(avg_rot_speed))
+			turn3 = true
 	## FINAL BLOCK
 	if abs(position.x - right_x) <pos_tol and abs(position.y-bot_y) <pos_tol and abs(left_heading - rot) < rot_tol :
 		$direction_arrow.set_rotation(PI/2)
 		$Camera2D/direction_label.set_text("Right")
+		if !path4:
+			interval_end = OS.get_ticks_msec()
+			end_x = position.x
+			end_y = position.y
+			x_speed = calc_avg_dir_speed(interval_start, interval_end, start_x, end_x)
+			y_speed = calc_avg_dir_speed(interval_start, interval_end, start_y, end_y)
+			last_avg_speed = calc_avg_speed(interval_start, interval_end, start_x, start_y, end_x, end_y)
+			avg_speeds["path4"] = Vector2(last_avg_speed, interval_end-interval_start)
+			avg_x_speeds["path4"] = Vector2(x_speed, interval_end-interval_start)
+			avg_y_speeds["path4"] = Vector2(y_speed, interval_end-interval_start)
+			print("Path 4 speed: " + str(last_avg_speed))
+			start_rot = rotation
+			path4 = true
 	if (past_first_block):
 		if abs(position.x - right_x) <pos_tol and abs(position.y-bot_y) <pos_tol and abs(up_heading - abs(rot)) < rot_tol :
+			if !turn4:
+				interval_start = OS.get_ticks_msec()
+				interval_start = OS.get_ticks_msec()
+				end_rot = rotation
+				avg_rot_speed = calc_avg_dir_speed(interval_end, interval_start, start_rot, end_rot)
+				avg_rot_speeds["turn4"] = Vector2(avg_rot_speed, interval_start-interval_end)
+				print("Turn 4 speed: " + str(avg_rot_speed))
+				turn4 = true
 			$direction_arrow.hide()
 			$Camera2D/direction_label.set_text("Follow path")
 			on_curved_path = true
@@ -114,9 +313,18 @@ func change_display_directions():
 			
 			Global.percent_oob = tOB
 			
+			# TODO: Calculate final average speed here
+			
+			
+			# TODO: finish SQL query
 			db.open_db()
-			var db_query = "insert into UserSignalsTrajectory (nBB, tOB, UserID) values ('" + str(nBB)
-			db_query += "', '" + str(tOB)
+			var db_query = "insert into UserSignalsTrajectory (UserID, TrialID, nBB, tOB, PercentOB, avg_stability, avg_x_total, avg_y_total, avg_speed_total, avg_x_half1, avg_y_half1, avg_speed_half1, avg_x_half2, avg_y_half2, avg_speed_half2, avg_rot_half1, avg_rot_half2, avg_rot_total) values ('"
+			db_query += Global.user_ID + "', '"
+			db_query += Global.trial_ID + "', '"
+			db_query += str(nBB) + "', '"
+			db_query += str(time_outside) + "', '"
+			db_query += str(Global.percent_oob) + "', '"
+			
 			db_query += "', '1')"
 			db.query(db_query)
 			
@@ -124,14 +332,37 @@ func change_display_directions():
 			# print("Writing to database")
 			return
 
+# Helper function to calculate average speed on straight paths
 func calc_avg_speed(t_0, t_f, x_0, x_f, y_0, y_f):
-	var numerator = sqrt(pow(x_f - x_0, 2) - pow(y_f - y_0, 2))
+	var numerator = sqrt(abs(pow(x_f - x_0, 2) - pow(y_f - y_0, 2)))
 	var denom = t_f - t_0
-	return numerator / denom
+	return numerator / denom * 1000
 	
+func calc_avg_dir_speed(t_0, t_f, u_0, u_f):
+	return abs(u_f - u_0) / (t_f - t_0) * 1000
+	
+# Helper function to call before calculating stability/jerks
+func calc_accel(t_0, t_f, speed_dict):
+	var accel = {}
+	var first_time = true
+	var last_time = null
+	var last_speed = null
+	var curr_accel = 0.0
+	for time in speed_dict:
+		if !first_time:
+			curr_accel = (speed_dict[time] - last_speed) / (time - last_time)
+			accel[time] = curr_accel
+		last_time = time
+		last_speed = speed_dict[time]
+		first_time = false
+		
+	return accel
+	
+# TODO: implement this
 func calc_avg_stability(t_0, t_f):
+	# Based off dimensionless jerk equation found in this paper:
 	# https://jneuroengrehab.biomedcentral.com/track/pdf/10.1186/s12984-015-0090-9.pdf
-	pass  # read more on the paper before trying to implement
+	pass
 
 func wrap_pi(angle):
 	while angle < -PI:
@@ -142,13 +373,14 @@ func wrap_pi(angle):
 	return angle		
 		
 
+# "Collision"/out of bounds starts
 func _on_collision_area_area_entered(area):
 	if (!on_curved_path):
 		# print("enter")
 		nBB += 1
 		time_enter = OS.get_ticks_msec()
 
-
+# "Collision"/out of bounds ends
 func _on_collision_area_area_exited(area):
 	if (!on_curved_path):
 		# print("exit")
@@ -156,7 +388,7 @@ func _on_collision_area_area_exited(area):
 		time_outside += (time_exit - time_enter)
 		print(time_outside)
 
-
+# Collision detection for entering curved path
 func _on_curve_collision_area_area_entered(area):
 	if (on_curved_path):
 		print("enter")
@@ -164,7 +396,7 @@ func _on_curve_collision_area_area_entered(area):
 		time_outside += (time_exit - time_enter)
 		print(time_outside)
 
-
+# Collision detection for exiting curved path
 func _on_curve_collision_area_area_exited(area):
 	if (on_curved_path):
 		print("exit")

@@ -25,4 +25,8 @@ func _on_TrajectoryButton_pressed():
 
 
 func _on_UserInfo_pressed():
+	get_tree().change_scene("res://UserInfo.tscn")
+
+
+func _on_QuestionnaireButton_pressed():
 	pass # Replace with function body.

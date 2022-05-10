@@ -41,11 +41,11 @@ margin_right = 330.0
 margin_bottom = 58.0
 rect_min_size = Vector2( 0, 40 )
 
-[node name="SuccessfulCommands" type="Label" parent="NinePatchRect/VBoxContainer"]
+[node name="TotalCommands" type="Label" parent="NinePatchRect/VBoxContainer"]
 margin_top = 62.0
 margin_right = 330.0
 margin_bottom = 76.0
-text = "Number of successful commands: "
+text = "Total number of commands given: "
 align = 1
 
 [node name="MarginContainer2" type="MarginContainer" parent="NinePatchRect/VBoxContainer"]
@@ -54,11 +54,11 @@ margin_right = 330.0
 margin_bottom = 90.0
 rect_min_size = Vector2( 0, 10 )
 
-[node name="TotalCommands" type="Label" parent="NinePatchRect/VBoxContainer"]
+[node name="SuccessfulCommands" type="Label" parent="NinePatchRect/VBoxContainer"]
 margin_top = 94.0
 margin_right = 330.0
 margin_bottom = 108.0
-text = "Total number of commands given: "
+text = "Average successful response percent: "
 align = 1
 
 [node name="MarginContainer3" type="MarginContainer" parent="NinePatchRect/VBoxContainer"]
@@ -74,16 +74,71 @@ margin_bottom = 140.0
 text = "Average response time: "
 align = 1
 
-[node name="MarginContainer4" type="MarginContainer" parent="NinePatchRect/VBoxContainer"]
+[node name="MarginContainer5" type="MarginContainer" parent="NinePatchRect/VBoxContainer"]
 margin_top = 144.0
 margin_right = 330.0
-margin_bottom = 224.0
+margin_bottom = 154.0
+rect_min_size = Vector2( 0, 10 )
+
+[node name="AvgSettlingPercent" type="Label" parent="NinePatchRect/VBoxContainer"]
+margin_top = 158.0
+margin_right = 330.0
+margin_bottom = 172.0
+text = "Average successful settling percent: "
+align = 1
+
+[node name="MarginContainer8" type="MarginContainer" parent="NinePatchRect/VBoxContainer"]
+margin_top = 176.0
+margin_right = 330.0
+margin_bottom = 186.0
+rect_min_size = Vector2( 0, 10 )
+
+[node name="AvgSettling" type="Label" parent="NinePatchRect/VBoxContainer"]
+margin_top = 190.0
+margin_right = 330.0
+margin_bottom = 204.0
+text = "Average settling time: "
+align = 1
+
+[node name="MarginContainer6" type="MarginContainer" parent="NinePatchRect/VBoxContainer"]
+margin_top = 208.0
+margin_right = 330.0
+margin_bottom = 218.0
+rect_min_size = Vector2( 0, 10 )
+
+[node name="InitResponseAcc" type="Label" parent="NinePatchRect/VBoxContainer"]
+margin_top = 222.0
+margin_right = 330.0
+margin_bottom = 236.0
+text = "Initial response accuracy: "
+align = 1
+
+[node name="MarginContainer7" type="MarginContainer" parent="NinePatchRect/VBoxContainer"]
+margin_top = 240.0
+margin_right = 330.0
+margin_bottom = 250.0
+rect_min_size = Vector2( 0, 10 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="AvgSettlingAcc" type="Label" parent="NinePatchRect/VBoxContainer"]
+margin_top = 254.0
+margin_right = 330.0
+margin_bottom = 268.0
+text = "Average settling accuracy: "
+align = 1
+
+[node name="MarginContainer4" type="MarginContainer" parent="NinePatchRect/VBoxContainer"]
+margin_top = 272.0
+margin_right = 330.0
+margin_bottom = 352.0
 rect_min_size = Vector2( 0, 80 )
 
 [node name="HBoxContainer" type="HBoxContainer" parent="NinePatchRect/VBoxContainer"]
-margin_top = 228.0
+margin_top = 356.0
 margin_right = 330.0
-margin_bottom = 248.0
+margin_bottom = 376.0
 alignment = 1
 __meta__ = {
 "_edit_use_anchors_": false

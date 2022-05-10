@@ -13,15 +13,19 @@ var password = ""
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	# Initialize the path to database
 	db = SQLite.new()
 	db.path = db_name
-	pass # Replace with function body.
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
 #	pass
 
+# When the user logs in, check the database to see if the given
+# username and password exists in the database
+# Log them in if it exists
+# Give an error if it doesn't exist
 func _on_LoginButton_pressed():
 	var db_query = "select * from UserInfo where Username = '"
 	db_query += username
@@ -35,7 +39,7 @@ func _on_LoginButton_pressed():
 		print("Login failed. Please try again.")
 	get_tree().change_scene("res://Menu.tscn")
 
-
+# Adds given username and password to database if the user chooses to create a profile
 func _on_CreateUserButton_pressed():
 	db.open_db()
 	var tableName = "UserInfo"
@@ -50,10 +54,10 @@ func _on_CreateUserButton_pressed():
 	
 	# db.insert_row(tableName, dict)
 
-
+# Change the variable string stored for the username as the user types it in
 func _on_Username_text_changed(new_text):
 	username = new_text
 
-
+# Change the variable string stored for the password as the user types it in
 func _on_Password_text_changed(new_text):
 	password = new_text

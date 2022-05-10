@@ -67,32 +67,83 @@ rect_min_size = Vector2( 0, 20 )
 margin_top = 137.0
 margin_right = 330.0
 margin_bottom = 151.0
-text = "Total number of commands"
+text = "Commands to Use"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="CommandsTerminateInput" type="LineEdit" parent="NinePatchRect/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="NinePatchRect/VBoxContainer"]
 margin_top = 155.0
 margin_right = 330.0
 margin_bottom = 179.0
 
-[node name="MarginContainer3" type="MarginContainer" parent="NinePatchRect/VBoxContainer"]
+[node name="UpCheck" type="CheckBox" parent="NinePatchRect/VBoxContainer/HBoxContainer"]
+margin_right = 46.0
+margin_bottom = 24.0
+text = "Up"
+
+[node name="DownCheck" type="CheckBox" parent="NinePatchRect/VBoxContainer/HBoxContainer"]
+margin_left = 50.0
+margin_right = 114.0
+margin_bottom = 24.0
+text = "Down"
+
+[node name="LeftCheck" type="CheckBox" parent="NinePatchRect/VBoxContainer/HBoxContainer"]
+margin_left = 118.0
+margin_right = 170.0
+margin_bottom = 24.0
+text = "Left"
+
+[node name="RightCheck" type="CheckBox" parent="NinePatchRect/VBoxContainer/HBoxContainer"]
+margin_left = 174.0
+margin_right = 234.0
+margin_bottom = 24.0
+text = "Right"
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="NinePatchRect/VBoxContainer"]
 margin_top = 183.0
 margin_right = 330.0
-margin_bottom = 203.0
+margin_bottom = 207.0
+
+[node name="Q1Check" type="CheckBox" parent="NinePatchRect/VBoxContainer/HBoxContainer2"]
+margin_right = 47.0
+margin_bottom = 24.0
+text = "Q1"
+
+[node name="Q2Check" type="CheckBox" parent="NinePatchRect/VBoxContainer/HBoxContainer2"]
+margin_left = 51.0
+margin_right = 98.0
+margin_bottom = 24.0
+text = "Q2"
+
+[node name="Q3Check" type="CheckBox" parent="NinePatchRect/VBoxContainer/HBoxContainer2"]
+margin_left = 102.0
+margin_right = 149.0
+margin_bottom = 24.0
+text = "Q3"
+
+[node name="Q4Check" type="CheckBox" parent="NinePatchRect/VBoxContainer/HBoxContainer2"]
+margin_left = 153.0
+margin_right = 200.0
+margin_bottom = 24.0
+text = "Q4"
+
+[node name="MarginContainer3" type="MarginContainer" parent="NinePatchRect/VBoxContainer"]
+margin_top = 211.0
+margin_right = 330.0
+margin_bottom = 231.0
 rect_min_size = Vector2( 0, 20 )
 
 [node name="CommandDuration" type="Label" parent="NinePatchRect/VBoxContainer"]
-margin_top = 207.0
+margin_top = 235.0
 margin_right = 330.0
-margin_bottom = 221.0
+margin_bottom = 249.0
 text = "Command duration"
 
 [node name="MinTime" type="HBoxContainer" parent="NinePatchRect/VBoxContainer"]
-margin_top = 225.0
+margin_top = 253.0
 margin_right = 330.0
-margin_bottom = 249.0
+margin_bottom = 277.0
 
 [node name="MinLabel" type="Label" parent="NinePatchRect/VBoxContainer/MinTime"]
 margin_top = 5.0
@@ -109,9 +160,9 @@ __meta__ = {
 }
 
 [node name="MaxTime" type="HBoxContainer" parent="NinePatchRect/VBoxContainer"]
-margin_top = 253.0
+margin_top = 281.0
 margin_right = 330.0
-margin_bottom = 277.0
+margin_bottom = 305.0
 
 [node name="MaxLabel" type="Label" parent="NinePatchRect/VBoxContainer/MaxTime"]
 margin_top = 5.0
@@ -125,50 +176,57 @@ margin_right = 130.0
 margin_bottom = 24.0
 
 [node name="MarginContainer4" type="MarginContainer" parent="NinePatchRect/VBoxContainer"]
-margin_top = 281.0
+margin_top = 309.0
 margin_right = 330.0
-margin_bottom = 301.0
+margin_bottom = 329.0
 rect_min_size = Vector2( 0, 20 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="MagDir" type="Label" parent="NinePatchRect/VBoxContainer"]
-margin_top = 305.0
+margin_top = 333.0
 margin_right = 330.0
-margin_bottom = 319.0
+margin_bottom = 347.0
 text = "Magnitude and Direction Settings"
 
 [node name="CheckBox" type="CheckBox" parent="NinePatchRect/VBoxContainer"]
-margin_top = 323.0
-margin_right = 330.0
-margin_bottom = 347.0
-group = ExtResource( 3 )
-text = "Direction only"
-
-[node name="CheckBox2" type="CheckBox" parent="NinePatchRect/VBoxContainer"]
 margin_top = 351.0
 margin_right = 330.0
 margin_bottom = 375.0
 group = ExtResource( 3 )
+text = "Direction only"
+
+[node name="CheckBox2" type="CheckBox" parent="NinePatchRect/VBoxContainer"]
+margin_top = 379.0
+margin_right = 330.0
+margin_bottom = 403.0
+group = ExtResource( 3 )
 text = "Magnitude and Direction"
 
 [node name="MarginContainer5" type="MarginContainer" parent="NinePatchRect/VBoxContainer"]
-margin_top = 379.0
+margin_top = 407.0
 margin_right = 330.0
-margin_bottom = 409.0
-rect_min_size = Vector2( 0, 30 )
+margin_bottom = 417.0
+rect_min_size = Vector2( 0, 10 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="Button" type="Button" parent="NinePatchRect/VBoxContainer"]
-margin_top = 413.0
+margin_top = 421.0
 margin_right = 330.0
-margin_bottom = 433.0
+margin_bottom = 441.0
 text = "Enter"
 [connection signal="text_changed" from="NinePatchRect/VBoxContainer/RepetitionsInput" to="." method="_on_RepetitionsInput_text_changed"]
-[connection signal="text_changed" from="NinePatchRect/VBoxContainer/CommandsTerminateInput" to="." method="_on_CommandsTerminateInput_text_changed"]
+[connection signal="toggled" from="NinePatchRect/VBoxContainer/HBoxContainer/UpCheck" to="." method="_on_UpCheck_toggled"]
+[connection signal="toggled" from="NinePatchRect/VBoxContainer/HBoxContainer/DownCheck" to="." method="_on_DownCheck_toggled"]
+[connection signal="toggled" from="NinePatchRect/VBoxContainer/HBoxContainer/LeftCheck" to="." method="_on_LeftCheck_toggled"]
+[connection signal="toggled" from="NinePatchRect/VBoxContainer/HBoxContainer/RightCheck" to="." method="_on_RightCheck_toggled"]
+[connection signal="toggled" from="NinePatchRect/VBoxContainer/HBoxContainer2/Q1Check" to="." method="_on_Q1Check_toggled"]
+[connection signal="toggled" from="NinePatchRect/VBoxContainer/HBoxContainer2/Q2Check" to="." method="_on_Q2Check_toggled"]
+[connection signal="toggled" from="NinePatchRect/VBoxContainer/HBoxContainer2/Q3Check" to="." method="_on_Q3Check_toggled"]
+[connection signal="toggled" from="NinePatchRect/VBoxContainer/HBoxContainer2/Q4Check" to="." method="_on_Q4Check_toggled"]
 [connection signal="text_changed" from="NinePatchRect/VBoxContainer/MinTime/MinTimeInput" to="." method="_on_MinTimeInput_text_changed"]
 [connection signal="text_changed" from="NinePatchRect/VBoxContainer/MaxTime/MaxTimeInput" to="." method="_on_MaxTimeInput_text_changed"]
 [connection signal="toggled" from="NinePatchRect/VBoxContainer/CheckBox" to="." method="_on_CheckBox_toggled"]
