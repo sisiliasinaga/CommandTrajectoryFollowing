@@ -28,9 +28,9 @@ __meta__ = {
 }
 
 [node name="VBoxContainer" type="VBoxContainer" parent="NinePatchRect"]
-margin_left = 35.2973
+margin_left = 35.0
 margin_top = 60.0
-margin_right = 365.297
+margin_right = 365.0
 margin_bottom = 480.0
 __meta__ = {
 "_edit_use_anchors_": false
@@ -86,11 +86,33 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="UserInfo" type="TextureButton" parent="NinePatchRect/VBoxContainer"]
+[node name="UserResults" type="TextureButton" parent="NinePatchRect/VBoxContainer"]
 margin_left = 54.0
 margin_top = 136.0
 margin_right = 274.0
 margin_bottom = 191.0
+rect_min_size = Vector2( 220, 55 )
+size_flags_horizontal = 4
+texture_normal = ExtResource( 2 )
+expand = true
+
+[node name="UserInfoLabel" type="Label" parent="NinePatchRect/VBoxContainer/UserResults"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_right = -3.00002
+margin_bottom = 4.0
+text = "User Results"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="UserInfo" type="TextureButton" parent="NinePatchRect/VBoxContainer"]
+margin_left = 54.0
+margin_top = 195.0
+margin_right = 274.0
+margin_bottom = 250.0
 rect_min_size = Vector2( 220, 55 )
 size_flags_horizontal = 4
 texture_normal = ExtResource( 2 )
@@ -108,19 +130,21 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="QuestionnaireButton" type="TextureButton" parent="NinePatchRect/VBoxContainer"]
-margin_top = 195.0
-margin_right = 220.0
-margin_bottom = 250.0
+[node name="Questionnaires" type="TextureButton" parent="NinePatchRect/VBoxContainer"]
+margin_left = 54.0
+margin_top = 254.0
+margin_right = 274.0
+margin_bottom = 309.0
 rect_min_size = Vector2( 220, 55 )
+size_flags_horizontal = 4
 texture_normal = ExtResource( 2 )
 expand = true
 
-[node name="QuestionnaireLabel" type="Label" parent="NinePatchRect/VBoxContainer/QuestionnaireButton"]
-anchor_right = 0.8
-anchor_bottom = 0.8
-margin_right = 40.0
-margin_bottom = 14.0
+[node name="QuestionnairesLabel" type="Label" parent="NinePatchRect/VBoxContainer/Questionnaires"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_right = -3.00002
+margin_bottom = 4.0
 text = "Questionnaires"
 align = 1
 valign = 1
@@ -129,5 +153,6 @@ __meta__ = {
 }
 [connection signal="pressed" from="NinePatchRect/VBoxContainer/CommandButton" to="." method="_on_CommandButton_pressed"]
 [connection signal="pressed" from="NinePatchRect/VBoxContainer/TrajectoryButton" to="." method="_on_TrajectoryButton_pressed"]
+[connection signal="pressed" from="NinePatchRect/VBoxContainer/UserResults" to="." method="_on_UserResults_pressed"]
 [connection signal="pressed" from="NinePatchRect/VBoxContainer/UserInfo" to="." method="_on_UserInfo_pressed"]
-[connection signal="pressed" from="NinePatchRect/VBoxContainer/QuestionnaireButton" to="." method="_on_QuestionnaireButton_pressed"]
+[connection signal="pressed" from="NinePatchRect/VBoxContainer/Questionnaires" to="." method="_on_Questionnaires_pressed"]

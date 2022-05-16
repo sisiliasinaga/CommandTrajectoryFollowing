@@ -159,6 +159,13 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="Label" type="Label" parent="NinePatchRect/VBoxContainer/MinTime"]
+margin_left = 132.0
+margin_top = 5.0
+margin_right = 185.0
+margin_bottom = 19.0
+text = "seconds"
+
 [node name="MaxTime" type="HBoxContainer" parent="NinePatchRect/VBoxContainer"]
 margin_top = 281.0
 margin_right = 330.0
@@ -174,6 +181,13 @@ text = "Max time: "
 margin_left = 72.0
 margin_right = 130.0
 margin_bottom = 24.0
+
+[node name="Label" type="Label" parent="NinePatchRect/VBoxContainer/MaxTime"]
+margin_left = 134.0
+margin_top = 5.0
+margin_right = 187.0
+margin_bottom = 19.0
+text = "seconds"
 
 [node name="MarginContainer4" type="MarginContainer" parent="NinePatchRect/VBoxContainer"]
 margin_top = 309.0

@@ -101,30 +101,10 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="PainButton" type="TextureButton" parent="NinePatchRect/VBoxContainer"]
+[node name="StimulantButton" type="TextureButton" parent="NinePatchRect/VBoxContainer"]
 margin_top = 195.0
 margin_right = 330.0
 margin_bottom = 250.0
-rect_min_size = Vector2( 220, 55 )
-texture_normal = ExtResource( 3 )
-expand = true
-
-[node name="PainLabel" type="Label" parent="NinePatchRect/VBoxContainer/PainButton"]
-anchor_right = 0.9
-anchor_bottom = 0.8
-margin_right = 40.0
-margin_bottom = 14.0
-text = "Pain"
-align = 1
-valign = 1
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="StimulantButton" type="TextureButton" parent="NinePatchRect/VBoxContainer"]
-margin_top = 254.0
-margin_right = 330.0
-margin_bottom = 309.0
 rect_min_size = Vector2( 220, 55 )
 texture_normal = ExtResource( 3 )
 expand = true
@@ -142,9 +122,9 @@ __meta__ = {
 }
 
 [node name="ConfidenceButton" type="TextureButton" parent="NinePatchRect/VBoxContainer"]
-margin_top = 313.0
+margin_top = 254.0
 margin_right = 330.0
-margin_bottom = 368.0
+margin_bottom = 309.0
 rect_min_size = Vector2( 220, 55 )
 texture_normal = ExtResource( 3 )
 expand = true
@@ -162,9 +142,9 @@ __meta__ = {
 }
 
 [node name="StressButton" type="TextureButton" parent="NinePatchRect/VBoxContainer"]
-margin_top = 372.0
+margin_top = 313.0
 margin_right = 330.0
-margin_bottom = 427.0
+margin_bottom = 368.0
 rect_min_size = Vector2( 220, 55 )
 texture_normal = ExtResource( 3 )
 expand = true
@@ -183,7 +163,6 @@ __meta__ = {
 [connection signal="pressed" from="NinePatchRect/VBoxContainer/FatigueButton" to="." method="_on_FatigueButton_pressed"]
 [connection signal="pressed" from="NinePatchRect/VBoxContainer/MotivationButton" to="." method="_on_MotivationButton_pressed"]
 [connection signal="pressed" from="NinePatchRect/VBoxContainer/WorkloadButton" to="." method="_on_WorkloadButton_pressed"]
-[connection signal="pressed" from="NinePatchRect/VBoxContainer/PainButton" to="." method="_on_PainButton_pressed"]
 [connection signal="pressed" from="NinePatchRect/VBoxContainer/StimulantButton" to="." method="_on_StimulantButton_pressed"]
 [connection signal="pressed" from="NinePatchRect/VBoxContainer/ConfidenceButton" to="." method="_on_ConfidenceButton_pressed"]
 [connection signal="pressed" from="NinePatchRect/VBoxContainer/StressButton" to="." method="_on_StressButton_pressed"]

@@ -1,14 +1,14 @@
 extends Node
 
 var user_ID = "0000"
-var trial_ID = "1"
+var trial_ID = "2"
 
 # Variables to store inputs for command following menu
 # Current values are standard values
-var repetitions = 1
+var repetitions = 20
 var commands = ["left", "right", "up", "down", "left-45", "right-45", "up-45", "down-45"]
 var min_time = 1
-var max_time = 5
+var max_time = 2
 var magnitude = false
 
 var up_check = true
@@ -33,6 +33,9 @@ var avg_settling_acc = 0.0
 # Variables to display on trajectory results page
 var avg_stability = 0.0
 var avg_speed = 0.0
+var avg_x_speed = 0.0
+var avg_y_speed = 0.0
+var avg_rot_speed = 0.0
 var percent_oob = 0.0
 
 # Variables for fatigue questionnaire answers

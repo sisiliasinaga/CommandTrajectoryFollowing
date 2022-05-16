@@ -8,7 +8,12 @@ extends Control
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	pass # Replace with function body.
+	get_node("NinePatchRect/VBoxContainer/Stability").text = "Average Stability: " + str(Global.avg_stability)
+	get_node("NinePatchRect/VBoxContainer/AvgSpeed").text = "Average Total Speed: " + str(Global.avg_speed) + " pixels / sec"
+	get_node("NinePatchRect/VBoxContainer/AvgXSpeed").text = "Average X Speed: " + str(Global.avg_x_speed) + " pixels / sec"
+	get_node("NinePatchRect/VBoxContainer/AvgYSpeed").text = "Average Y Speed: " + str(Global.avg_y_speed) + " pixels / sec"
+	get_node("NinePatchRect/VBoxContainer/AvgRotSpeed").text = "Average Rotational Speed: " + str(Global.avg_rot_speed) + " rad / sec"
+	get_node("NinePatchRect/VBoxContainer/OutofBounds").text = "% Out of Bounds: " + str(Global.percent_oob) + "%"
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.

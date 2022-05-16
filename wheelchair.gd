@@ -92,6 +92,12 @@ var jerk_2 = {}
 var jerk_3 = {}
 var jerk_4 = {}
 var jerk_curve = {}
+# DLJ for each portion of the track
+var dlj_1 = 0.0
+var dlj_2 = 0.0
+var dlj_3 = 0.0
+var dlj_4 = 0.0
+var dlj_curve = 0.0
 
 # var input_type = "keyboard"
 var input_type = "controller"
@@ -193,6 +199,12 @@ func change_display_directions():
 			avg_x_speeds["path1"] = Vector2(x_speed, interval_end-interval_start)
 			avg_y_speeds["path1"] = Vector2(y_speed, interval_end-interval_start)
 			start_rot = rotation
+			
+			# Calculate first acceleration and squared jerk
+			accel_1 = calc_accel(v_speed_1)
+			jerk_1 = calc_abs_sq_jerks(accel_1)
+			v_peaks.append(curr_v_peak)
+			dlj_1 = calc_avg_stability(interval_start, interval_end, v_peaks[0], jerk_1)
 			path1 = true
 		# print("Left")
 	if abs(position.x - right_x) <pos_tol and abs(position.y-top_y) <pos_tol and abs(left_heading - rot) < rot_tol :
@@ -222,7 +234,11 @@ func change_display_directions():
 			avg_speeds["path2"] = Vector2(last_avg_speed, interval_end-interval_start)
 			avg_x_speeds["path2"] = Vector2(x_speed, interval_end-interval_start)
 			avg_y_speeds["path2"] = Vector2(y_speed, interval_end-interval_start)
-			print("Path 2 speed: " + str(last_avg_speed))
+			
+			accel_2 = calc_accel(v_speed_2)
+			jerk_2 = calc_abs_sq_jerks(accel_2)
+			v_peaks.append(curr_v_peak)
+			dlj_2 = calc_avg_stability(interval_start, interval_end, v_peaks[1], jerk_2)
 			start_rot = rotation
 			path2 = true
 	if abs(position.x - left_x) <pos_tol and abs(position.y-top_y) <pos_tol and abs(up_heading - abs(rot)) < rot_tol :
@@ -251,7 +267,11 @@ func change_display_directions():
 			avg_speeds["path3"] = Vector2(last_avg_speed, interval_end-interval_start)
 			avg_x_speeds["path3"] = Vector2(x_speed, interval_end-interval_start)
 			avg_y_speeds["path3"] = Vector2(y_speed, interval_end-interval_start)
-			print("Path 3 speed: " + str(last_avg_speed))
+			
+			accel_3 = calc_accel(v_speed_3)
+			jerk_3 = calc_abs_sq_jerks(accel_3)
+			v_peaks.append(curr_v_peak)
+			dlj_3 = calc_avg_stability(interval_start, interval_end, v_peaks[2], jerk_3)
 			start_rot = rotation
 			path3 = true
 	if abs(position.x - left_x) <pos_tol and abs(position.y-bot_y) <pos_tol and abs(left_heading - rot) < rot_tol :
@@ -280,7 +300,11 @@ func change_display_directions():
 			avg_speeds["path4"] = Vector2(last_avg_speed, interval_end-interval_start)
 			avg_x_speeds["path4"] = Vector2(x_speed, interval_end-interval_start)
 			avg_y_speeds["path4"] = Vector2(y_speed, interval_end-interval_start)
-			print("Path 4 speed: " + str(last_avg_speed))
+			
+			accel_4 = calc_accel(v_speed_4)
+			jerk_4 = calc_abs_sq_jerks(accel_4)
+			v_peaks.append(curr_v_peak)
+			dlj_4 = calc_avg_stability(interval_start, interval_end, v_peaks[3], jerk_4)
 			start_rot = rotation
 			path4 = true
 	if (past_first_block):
@@ -300,6 +324,15 @@ func change_display_directions():
 			get_node('../path_area').hide()
 			get_node('../path_color').hide()
 			get_node('../collision_area').hide()
+			get_node('../Label1').hide()
+			get_node('../Label2').hide()
+			get_node('../Label3').hide()
+			get_node('../Label4').hide()
+			get_node('../Label5').hide()
+			get_node('../Label6').hide()
+			get_node('../Label7').hide()
+			get_node('../Label8').hide()
+			get_node('../Sprite').hide()
 #			get_node('../path/turn2').hide()
 #			get_node('../path/turn3').hide()
 #			get_node('../path/turn4').hide()
@@ -309,28 +342,52 @@ func change_display_directions():
 			time_now = OS.get_ticks_msec()
 			var elapsed_time = float((time_now - time_start) / 1000)
 			
-			var tOB = float(time_outside / elapsed_time)
+			var tOB = float(float(time_outside / 1000) / elapsed_time)
 			
 			Global.percent_oob = tOB
 			
-			# TODO: Calculate final average speed here
+			# Calculate final average speed here
+			for speed in avg_speeds:
+				Global.avg_speed += avg_speeds[speed][0]
+			Global.avg_speed /= avg_speeds.size()
 			
+			for x_speed in avg_x_speeds:
+				Global.avg_x_speed += avg_x_speeds[x_speed][0]
+			Global.avg_x_speed /= avg_x_speeds.size()
 			
-			# TODO: finish SQL query
+			for y_speed in avg_y_speeds:
+				Global.avg_y_speed += avg_y_speeds[y_speed][0]
+			Global.avg_y_speed /= avg_y_speeds.size()
+			
+			for rot_speed in avg_rot_speeds:
+				Global.avg_rot_speed += avg_rot_speeds[rot_speed][0]
+			Global.avg_rot_speed /= avg_rot_speeds.size()
+			
+			# Average dlj's
+			Global.avg_stability = (dlj_1 + dlj_2 + dlj_3 + dlj_4) / 4
+			
+			# SQL query
 			db.open_db()
-			var db_query = "insert into UserSignalsTrajectory (UserID, TrialID, nBB, tOB, PercentOB, avg_stability, avg_x_total, avg_y_total, avg_speed_total, avg_x_half1, avg_y_half1, avg_speed_half1, avg_x_half2, avg_y_half2, avg_speed_half2, avg_rot_half1, avg_rot_half2, avg_rot_total) values ('"
+			var db_query = "insert into UserSignalsTrajectory (UserID, TrialID, nBB, tOB, PercentOB, avg_stability, avg_x_total, avg_y_total, avg_speed_total, avg_x_half1, avg_y_half1, avg_speed_half1, avg_x_half2, avg_y_half2, avg_speed_half2, avg_rot_total) values ('"
 			db_query += Global.user_ID + "', '"
 			db_query += Global.trial_ID + "', '"
 			db_query += str(nBB) + "', '"
-			db_query += str(time_outside) + "', '"
+			db_query += str(float(time_outside / 1000)) + "', '"
 			db_query += str(Global.percent_oob) + "', '"
-			
-			db_query += "', '1')"
+			db_query += str(Global.avg_stability) + "', '"
+			db_query += str(Global.avg_x_speed) + "', '"
+			db_query += str(Global.avg_y_speed) + "', '"
+			db_query += str(Global.avg_speed) + "', '"
+			db_query += str(Global.avg_x_speed) + "', '"
+			db_query += str(Global.avg_y_speed) + "', '"
+			db_query += str(Global.avg_speed) + "', '"
+			db_query += str(Global.avg_x_speed) + "', '"
+			db_query += str(Global.avg_y_speed) + "', '"
+			db_query += str(Global.avg_speed) + "', '"
+			db_query += str(Global.avg_rot_speed) + "')"
 			db.query(db_query)
 			
 			get_tree().change_scene("res://TrajectoryFollowingResults.tscn")
-			# print("Writing to database")
-			return
 
 # Helper function to calculate average speed on straight paths
 func calc_avg_speed(t_0, t_f, x_0, x_f, y_0, y_f):
@@ -342,7 +399,7 @@ func calc_avg_dir_speed(t_0, t_f, u_0, u_f):
 	return abs(u_f - u_0) / (t_f - t_0) * 1000
 	
 # Helper function to call before calculating stability/jerks
-func calc_accel(t_0, t_f, speed_dict):
+func calc_accel(speed_dict):
 	var accel = {}
 	var first_time = true
 	var last_time = null
@@ -350,7 +407,7 @@ func calc_accel(t_0, t_f, speed_dict):
 	var curr_accel = 0.0
 	for time in speed_dict:
 		if !first_time:
-			curr_accel = (speed_dict[time] - last_speed) / (time - last_time)
+			curr_accel = (speed_dict[time] - last_speed) / (float(time - last_time) / 1000)
 			accel[time] = curr_accel
 		last_time = time
 		last_speed = speed_dict[time]
@@ -358,11 +415,39 @@ func calc_accel(t_0, t_f, speed_dict):
 		
 	return accel
 	
-# TODO: implement this
-func calc_avg_stability(t_0, t_f):
+func calc_abs_sq_jerks(accel_dict):
+	var jerks = {}
+	var first_time = true
+	var last_time = null
+	var last_accel = null
+	var curr_jerks = 0.0
+	for time in accel_dict:
+		if !first_time:
+			curr_jerks = (accel_dict[time] - last_accel) / (float(time - last_time) / 1000)
+			jerks[time] = pow(abs(curr_jerks), 2)
+		last_time = time
+		last_accel = accel_dict[time]
+		first_time = false
+		
+	return jerks
+	
+func calc_avg_stability(t_0, t_f, v_peak, jerks_dict):
 	# Based off dimensionless jerk equation found in this paper:
 	# https://jneuroengrehab.biomedcentral.com/track/pdf/10.1186/s12984-015-0090-9.pdf
-	pass
+	
+	var first_time = true
+	var last_time = null
+	var last_jerks = null
+	var riemann_sum = 0.0
+	for time in jerks_dict:
+		if !first_time:
+			riemann_sum += (jerks_dict[time] + last_jerks) / 2 * (float(time - last_time) / 1000)
+		last_time = time
+		last_jerks = jerks_dict[time]
+		first_time = false
+		
+	var dlj = -1 * pow((float(t_f - t_0) / 1000.0), 5) / pow(v_peak, 2) * riemann_sum
+	return dlj
 
 func wrap_pi(angle):
 	while angle < -PI:
@@ -406,3 +491,4 @@ func _on_curve_collision_area_area_exited(area):
 
 func _on_BackButton_pressed():
 	get_tree().change_scene("res://Menu.tscn")
+
