@@ -28,5 +28,9 @@ func _on_UserInfo_pressed():
 	get_tree().change_scene("res://UserInfo.tscn")
 
 
-func _on_QuestionnaireButton_pressed():
-	pass # Replace with function body.
+func _on_UserResults_pressed():
+	get_tree().change_scene("res://OutcomeResults.tscn")
+
+
+func _on_Questionnaires_pressed():
+	get_tree().change_scene("res://Questionnaires.tscn")

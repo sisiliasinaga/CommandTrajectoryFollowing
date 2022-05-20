@@ -24,9 +24,9 @@ func _ready():
 	get_node("NinePatchRect/VBoxContainer/MaxTime/MaxTimeInput").text = str(Global.max_time)
 	
 	if Global.magnitude:
-		get_node("NinePatchRect/VBoxContainer/CheckBox").pressed = true
-	else:
 		get_node("NinePatchRect/VBoxContainer/CheckBox2").pressed = true
+	else:
+		get_node("NinePatchRect/VBoxContainer/CheckBox").pressed = true
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.

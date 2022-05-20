@@ -216,9 +216,9 @@ func _process(delta):
 		db_query += Global.user_ID + "', '"
 		db_query += Global.trial_ID + "', '"
 		db_query += str(Global.avg_response_time) + "', '"
-		db_query += str(Global.num_correct / Global.prompted_commands) + "', '"
+		db_query += str(float(Global.num_correct) / float(Global.prompted_commands)) + "', '"
 		db_query += str(Global.avg_settling_time) + "', '"
-		db_query += str(Global.num_settled / Global.prompted_commands) + "', '"
+		db_query += str(float(Global.num_settled) / float(Global.prompted_commands)) + "', '"
 		db_query += str(Global.init_response_acc) + "', '"
 		db_query += str(Global.avg_settling_acc) + "')"
 		db.query(db_query)

@@ -28,10 +28,6 @@ func _on_WorkloadButton_pressed():
 	get_tree().change_scene("res://WorkloadStart.tscn")
 
 
-func _on_PainButton_pressed():
-	pass # Replace with function body.
-
-
 func _on_StimulantButton_pressed():
 	get_tree().change_scene("res://StimulantConsumption.tscn")
 
