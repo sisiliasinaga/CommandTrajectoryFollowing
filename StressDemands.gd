@@ -68,3 +68,11 @@ func _on_Button_button_up():
 	db.query(db_query)
 	
 	get_tree().change_scene("res://Questionnaires.tscn")
+
+
+func _on_BackButton_pressed():
+	get_tree().change_scene("res://StressJoy.tscn")
+
+
+func _on_MenuButton_pressed():
+	get_tree().change_scene("res://Questionnaires.tscn")

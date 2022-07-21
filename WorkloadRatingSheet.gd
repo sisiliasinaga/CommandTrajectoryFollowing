@@ -30,3 +30,11 @@ func _on_PhysicalSlider_value_changed(value):
 
 func _on_Button_button_up():
 	get_tree().change_scene("res://WorkloadRatingSheet2.tscn")
+
+
+func _on_BackButton_pressed():
+	get_tree().change_scene("res://WorkloadScalesInfo.tscn")
+
+
+func _on_MenuButton_pressed():
+	get_tree().change_scene("res://Questionnaires.tscn")

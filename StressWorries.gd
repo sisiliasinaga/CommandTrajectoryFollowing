@@ -38,3 +38,7 @@ func _on_HSlider_W5_value_changed(value):
 
 func _on_Button_button_up():
 	get_tree().change_scene("res://StressTension.tscn")
+
+
+func _on_MenuButton_pressed():
+	get_tree().change_scene("res://Questionnaires.tscn")

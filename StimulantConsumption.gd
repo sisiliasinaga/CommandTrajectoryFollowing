@@ -44,3 +44,7 @@ func _on_Button_button_up():
 
 func _on_StimulantResponse_text_changed():
 	text_response = $NinePatchRect/VBoxContainer/StimulantResponse.text
+
+
+func _on_ExitButton_pressed():
+	get_tree().change_scene("res://Questionnaires.tscn")

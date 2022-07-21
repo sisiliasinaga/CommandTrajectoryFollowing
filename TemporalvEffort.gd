@@ -31,3 +31,11 @@ func _on_Button_button_up():
 	else:
 		Global.effort_sum += 1
 	get_tree().change_scene("res://WorkloadScalesInfo.tscn")
+
+
+func _on_BackButton_pressed():
+	get_tree().change_scene("res://PhysicalvFrustration.tscn")
+
+
+func _on_MenuButton_pressed():
+	get_tree().change_scene("res://Questionnaires.tscn")

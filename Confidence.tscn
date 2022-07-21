@@ -156,10 +156,23 @@ margin_right = 323.0
 margin_bottom = 361.0
 rect_min_size = Vector2( 0, 200 )
 
-[node name="Button" type="Button" parent="NinePatchRect/VBoxContainer"]
+[node name="HBoxContainer3" type="HBoxContainer" parent="NinePatchRect/VBoxContainer"]
 margin_top = 365.0
 margin_right = 323.0
 margin_bottom = 385.0
+alignment = 1
+
+[node name="Button" type="Button" parent="NinePatchRect/VBoxContainer/HBoxContainer3"]
+margin_left = 117.0
+margin_right = 167.0
+margin_bottom = 20.0
 text = "Finish"
+
+[node name="ExitButton" type="Button" parent="NinePatchRect/VBoxContainer/HBoxContainer3"]
+margin_left = 171.0
+margin_right = 206.0
+margin_bottom = 20.0
+text = "Exit"
 [connection signal="value_changed" from="NinePatchRect/VBoxContainer/HBoxContainer2/HSlider" to="." method="_on_HSlider_value_changed"]
-[connection signal="button_up" from="NinePatchRect/VBoxContainer/Button" to="." method="_on_Button_button_up"]
+[connection signal="button_up" from="NinePatchRect/VBoxContainer/HBoxContainer3/Button" to="." method="_on_Button_button_up"]
+[connection signal="pressed" from="NinePatchRect/VBoxContainer/HBoxContainer3/ExitButton" to="." method="_on_ExitButton_pressed"]

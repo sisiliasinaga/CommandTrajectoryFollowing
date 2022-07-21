@@ -85,11 +85,34 @@ margin_right = 330.0
 margin_bottom = 371.0
 rect_min_size = Vector2( 0, 100 )
 
-[node name="Button" type="Button" parent="NinePatchRect/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="NinePatchRect/VBoxContainer"]
 margin_top = 375.0
 margin_right = 330.0
 margin_bottom = 395.0
+alignment = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="BackButton" type="Button" parent="NinePatchRect/VBoxContainer/HBoxContainer"]
+margin_left = 95.0
+margin_right = 137.0
+margin_bottom = 20.0
+text = "Back"
+
+[node name="Button" type="Button" parent="NinePatchRect/VBoxContainer/HBoxContainer"]
+margin_left = 141.0
+margin_right = 183.0
+margin_bottom = 20.0
 text = "Next"
+
+[node name="MenuButton" type="Button" parent="NinePatchRect/VBoxContainer/HBoxContainer"]
+margin_left = 187.0
+margin_right = 235.0
+margin_bottom = 20.0
+text = "Menu"
 [connection signal="toggled" from="NinePatchRect/VBoxContainer/Mental" to="." method="_on_Mental_toggled"]
 [connection signal="toggled" from="NinePatchRect/VBoxContainer/Effort" to="." method="_on_Effort_toggled"]
-[connection signal="button_up" from="NinePatchRect/VBoxContainer/Button" to="." method="_on_Button_button_up"]
+[connection signal="pressed" from="NinePatchRect/VBoxContainer/HBoxContainer/BackButton" to="." method="_on_BackButton_pressed"]
+[connection signal="button_up" from="NinePatchRect/VBoxContainer/HBoxContainer/Button" to="." method="_on_Button_button_up"]
+[connection signal="pressed" from="NinePatchRect/VBoxContainer/HBoxContainer/MenuButton" to="." method="_on_MenuButton_pressed"]

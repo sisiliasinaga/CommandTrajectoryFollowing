@@ -432,15 +432,35 @@ text = "Better than
 usual"
 align = 1
 
-[node name="Button" type="Button" parent="NinePatchRect/VBoxContainer"]
+[node name="HBoxContainer13" type="HBoxContainer" parent="NinePatchRect/VBoxContainer"]
 margin_top = 438.0
 margin_right = 336.0
 margin_bottom = 458.0
+alignment = 1
+
+[node name="BackButton" type="Button" parent="NinePatchRect/VBoxContainer/HBoxContainer13"]
+margin_left = 94.0
+margin_right = 136.0
+margin_bottom = 20.0
+text = "Back"
+
+[node name="Button" type="Button" parent="NinePatchRect/VBoxContainer/HBoxContainer13"]
+margin_left = 140.0
+margin_right = 190.0
+margin_bottom = 20.0
 text = "Finish"
+
+[node name="MenuButton" type="Button" parent="NinePatchRect/VBoxContainer/HBoxContainer13"]
+margin_left = 194.0
+margin_right = 242.0
+margin_bottom = 20.0
+text = "Menu"
 [connection signal="value_changed" from="NinePatchRect/VBoxContainer/HBoxContainer/HSlider9" to="." method="_on_HSlider9_value_changed"]
 [connection signal="value_changed" from="NinePatchRect/VBoxContainer/HBoxContainer3/HSlider10" to="." method="_on_HSlider10_value_changed"]
 [connection signal="value_changed" from="NinePatchRect/VBoxContainer/HBoxContainer5/HSlider11" to="." method="_on_HSlider11_value_changed"]
 [connection signal="value_changed" from="NinePatchRect/VBoxContainer/HBoxContainer7/HSlider12" to="." method="_on_HSlider12_value_changed"]
 [connection signal="value_changed" from="NinePatchRect/VBoxContainer/HBoxContainer9/HSlider13" to="." method="_on_HSlider13_value_changed"]
 [connection signal="value_changed" from="NinePatchRect/VBoxContainer/HBoxContainer11/HSlider14" to="." method="_on_HSlider14_value_changed"]
-[connection signal="button_up" from="NinePatchRect/VBoxContainer/Button" to="." method="_on_Button_button_up"]
+[connection signal="pressed" from="NinePatchRect/VBoxContainer/HBoxContainer13/BackButton" to="." method="_on_BackButton_pressed"]
+[connection signal="button_up" from="NinePatchRect/VBoxContainer/HBoxContainer13/Button" to="." method="_on_Button_button_up"]
+[connection signal="pressed" from="NinePatchRect/VBoxContainer/HBoxContainer13/MenuButton" to="." method="_on_MenuButton_pressed"]

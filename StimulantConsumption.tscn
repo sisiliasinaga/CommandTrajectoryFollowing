@@ -85,12 +85,25 @@ margin_right = 330.0
 margin_bottom = 378.0
 rect_min_size = Vector2( 0, 125 )
 
-[node name="Button" type="Button" parent="NinePatchRect/VBoxContainer"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="NinePatchRect/VBoxContainer"]
 margin_top = 382.0
 margin_right = 330.0
 margin_bottom = 402.0
+alignment = 1
+
+[node name="Button" type="Button" parent="NinePatchRect/VBoxContainer/HBoxContainer2"]
+margin_left = 120.0
+margin_right = 170.0
+margin_bottom = 20.0
 text = "Finish"
+
+[node name="ExitButton" type="Button" parent="NinePatchRect/VBoxContainer/HBoxContainer2"]
+margin_left = 174.0
+margin_right = 209.0
+margin_bottom = 20.0
+text = "Exit"
 [connection signal="toggled" from="NinePatchRect/VBoxContainer/HBoxContainer/CheckBox" to="." method="_on_CheckBox_toggled"]
 [connection signal="toggled" from="NinePatchRect/VBoxContainer/HBoxContainer/CheckBox2" to="." method="_on_CheckBox2_toggled"]
 [connection signal="text_changed" from="NinePatchRect/VBoxContainer/StimulantResponse" to="." method="_on_StimulantResponse_text_changed"]
-[connection signal="button_up" from="NinePatchRect/VBoxContainer/Button" to="." method="_on_Button_button_up"]
+[connection signal="button_up" from="NinePatchRect/VBoxContainer/HBoxContainer2/Button" to="." method="_on_Button_button_up"]
+[connection signal="pressed" from="NinePatchRect/VBoxContainer/HBoxContainer2/ExitButton" to="." method="_on_ExitButton_pressed"]

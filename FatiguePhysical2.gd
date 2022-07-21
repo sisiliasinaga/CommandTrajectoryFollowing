@@ -29,3 +29,11 @@ func _on_HSlider8_value_changed(value):
 
 func _on_Button_button_up():
 	get_tree().change_scene("res://FatigueMental.tscn")
+
+
+func _on_BackButton_pressed():
+	get_tree().change_scene("res://FatiguePhysical.tscn")
+
+
+func _on_MenuButton_pressed():
+	get_tree().change_scene("res://Questionnaires.tscn")

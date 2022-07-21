@@ -48,9 +48,22 @@ margin_right = 330.0
 margin_bottom = 363.0
 rect_min_size = Vector2( 0, 175 )
 
-[node name="Button" type="Button" parent="NinePatchRect/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="NinePatchRect/VBoxContainer"]
 margin_top = 367.0
 margin_right = 330.0
 margin_bottom = 387.0
+alignment = 1
+
+[node name="BackButton" type="Button" parent="NinePatchRect/VBoxContainer/HBoxContainer"]
+margin_left = 121.0
+margin_right = 163.0
+margin_bottom = 20.0
+text = "Back"
+
+[node name="Button" type="Button" parent="NinePatchRect/VBoxContainer/HBoxContainer"]
+margin_left = 167.0
+margin_right = 209.0
+margin_bottom = 20.0
 text = "Next"
-[connection signal="button_up" from="NinePatchRect/VBoxContainer/Button" to="." method="_on_Button_button_up"]
+[connection signal="pressed" from="NinePatchRect/VBoxContainer/HBoxContainer/BackButton" to="." method="_on_BackButton_pressed"]
+[connection signal="button_up" from="NinePatchRect/VBoxContainer/HBoxContainer/Button" to="." method="_on_Button_button_up"]

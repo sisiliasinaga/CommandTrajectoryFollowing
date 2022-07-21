@@ -108,4 +108,17 @@ margin_right = 280.0
 margin_bottom = 352.0
 text = "x-axis"
 align = 1
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="NinePatchRect/VBoxContainer"]
+margin_top = 412.0
+margin_right = 330.0
+margin_bottom = 432.0
+alignment = 1
+
+[node name="BackButton" type="Button" parent="NinePatchRect/VBoxContainer/HBoxContainer2"]
+margin_left = 144.0
+margin_right = 186.0
+margin_bottom = 20.0
+text = "Back"
 [connection signal="item_selected" from="NinePatchRect/VBoxContainer/OptionButton" to="." method="_on_OptionButton_item_selected"]
+[connection signal="pressed" from="NinePatchRect/VBoxContainer/HBoxContainer2/BackButton" to="." method="_on_BackButton_pressed"]

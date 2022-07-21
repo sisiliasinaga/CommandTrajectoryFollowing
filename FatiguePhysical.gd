@@ -36,3 +36,7 @@ func _on_HSlider4_value_changed(value):
 
 func _on_HSlider5_value_changed(value):
 	Global.fatigue_q5 = value
+
+
+func _on_BackButton_pressed():
+	get_tree().change_scene("res://Questionnaires.tscn")

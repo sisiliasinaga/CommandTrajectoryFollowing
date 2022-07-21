@@ -18,3 +18,11 @@ func _ready():
 
 func _on_Button_button_up():
 	get_tree().change_scene("res://MentalvEffort.tscn")
+
+
+func _on_BackButton_pressed():
+	get_tree().change_scene("res://WorkloadQuestions1.tscn")
+
+
+func _on_MenuButton_pressed():
+	get_tree().change_scene("res://Questionnaires.tscn")

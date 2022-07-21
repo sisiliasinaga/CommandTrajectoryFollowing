@@ -212,3 +212,7 @@ func delete_child(curr_node):
 		if n != $NinePatchRect/VBoxContainer/HBoxContainer/VBoxContainer/LineContainer/Background:
 			curr_node.remove_child(n)
 			n.queue_free()
+
+
+func _on_BackButton_pressed():
+	get_tree().change_scene("res://Menu.tscn")

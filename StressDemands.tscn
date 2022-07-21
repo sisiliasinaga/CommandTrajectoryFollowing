@@ -485,14 +485,34 @@ margin_right = 320.0
 margin_bottom = 22.0
 text = "Usually"
 
-[node name="Button" type="Button" parent="NinePatchRect/VBoxContainer"]
+[node name="HBoxContainer11" type="HBoxContainer" parent="NinePatchRect/VBoxContainer"]
 margin_top = 419.0
 margin_right = 333.0
 margin_bottom = 439.0
+alignment = 1
+
+[node name="BackButton" type="Button" parent="NinePatchRect/VBoxContainer/HBoxContainer11"]
+margin_left = 92.0
+margin_right = 134.0
+margin_bottom = 20.0
+text = "Back"
+
+[node name="Button" type="Button" parent="NinePatchRect/VBoxContainer/HBoxContainer11"]
+margin_left = 138.0
+margin_right = 188.0
+margin_bottom = 20.0
 text = "Finish"
+
+[node name="MenuButton" type="Button" parent="NinePatchRect/VBoxContainer/HBoxContainer11"]
+margin_left = 192.0
+margin_right = 240.0
+margin_bottom = 20.0
+text = "Menu"
 [connection signal="value_changed" from="NinePatchRect/VBoxContainer/HBoxContainer/HSlider_D1" to="." method="_on_HSlider_D1_value_changed"]
 [connection signal="value_changed" from="NinePatchRect/VBoxContainer/HBoxContainer3/HSlider_D2" to="." method="_on_HSlider_D2_value_changed"]
 [connection signal="value_changed" from="NinePatchRect/VBoxContainer/HBoxContainer5/HSlider_D3" to="." method="_on_HSlider_D3_value_changed"]
 [connection signal="value_changed" from="NinePatchRect/VBoxContainer/HBoxContainer7/HSlider_D4" to="." method="_on_HSlider_D4_value_changed"]
 [connection signal="value_changed" from="NinePatchRect/VBoxContainer/HBoxContainer9/HSlider_D5" to="." method="_on_HSlider_D5_value_changed"]
-[connection signal="button_up" from="NinePatchRect/VBoxContainer/Button" to="." method="_on_Button_button_up"]
+[connection signal="pressed" from="NinePatchRect/VBoxContainer/HBoxContainer11/BackButton" to="." method="_on_BackButton_pressed"]
+[connection signal="button_up" from="NinePatchRect/VBoxContainer/HBoxContainer11/Button" to="." method="_on_Button_button_up"]
+[connection signal="pressed" from="NinePatchRect/VBoxContainer/HBoxContainer11/MenuButton" to="." method="_on_MenuButton_pressed"]

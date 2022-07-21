@@ -38,3 +38,11 @@ func _on_HSlider15_value_changed(value):
 
 func _on_Button_button_up():
 	get_tree().change_scene("res://MotivationEffort.tscn")
+
+
+func _on_MenuButton_pressed():
+	get_tree().change_scene("res://Questionnaires.tscn")
+
+
+func _on_BackButton_pressed():
+	get_tree().change_scene("res://MotivationEnjoyPerc.tscn")

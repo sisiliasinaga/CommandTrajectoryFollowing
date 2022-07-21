@@ -212,9 +212,16 @@ func _process(delta):
 		Global.avg_settling_acc = float(sum_settling_acc / Global.num_correct)
 		
 		db.open_db()
+		
+		# Get number of existing trials for the given user ID
+		var user_trials = db.select_rows("UserSignalsCommand", "UserID = " + Global.user_ID, ["TrialID"])
+		# _trials = db.fetch_array("select * from UserSignalsCommand where UserID = '" + Global.user_ID + "'")
+		var user_trials_count = user_trials.size()
+		print(user_trials_count)
+		
 		var db_query = "insert into UserSignalsCommand (UserID, TrialID, tR, percentR, tS, percentS, init_rA, avg_sA) values ('"
 		db_query += Global.user_ID + "', '"
-		db_query += Global.trial_ID + "', '"
+		db_query += str(user_trials_count) + "', '"
 		db_query += str(Global.avg_response_time) + "', '"
 		db_query += str(float(Global.num_correct) / float(Global.prompted_commands)) + "', '"
 		db_query += str(Global.avg_settling_time) + "', '"
@@ -228,24 +235,41 @@ func _process(delta):
 # Function to generate the arrow directions, durations, and magnitudes for the entire run
 # Is called inside the ready() function
 func generate_commands():
-	for i in range(Global.commands.size()):
-		var next_command = randi() % Global.commands.size()
-		if commands_list.size() > 0:
-			while next_command == commands_list[-1]:
-				next_command = randi() % Global.commands.size()
-		commands_list.append(next_command)
-		durations_list.append(randi() % (Global.max_time - Global.min_time) + Global.min_time)
+	commands_list = shuffleList(Global.commands)
+	
+	for i in range(commands_list.size()):
+		durations_list.append(rng.randf_range(Global.min_time, Global.max_time))
 		if Global.magnitude:
 			magnitude_list.append(rng.randf_range(0.0, 0.5))
 	
+#	for i in range(Global.commands.size()):
+#		var next_command = randi() % Global.commands.size()
+#		if commands_list.size() > 0:
+#			while next_command == commands_list[-1]:
+#				next_command = randi() % Global.commands.size()
+#		commands_list.append(next_command)
+#		durations_list.append(randi() % (Global.max_time - Global.min_time) + Global.min_time)
+#		if Global.magnitude:
+#			magnitude_list.append(rng.randf_range(0.0, 0.5))
+
+# Function taken from the following: https://godotengine.org/qa/2547/how-to-randomize-a-list-array
+func shuffleList(list):
+	var shuffledList = [] 
+	var indexList = range(list.size())
+	for i in range(list.size()):
+		randomize()
+		var x = randi()%indexList.size()
+		shuffledList.append(list[indexList[x]])
+		indexList.remove(x)
+	return shuffledList
 
 # Gets the direction (and magnitude) of the current command arrow from the commands list
 # and displays the appropriate arrow for that command
 func target_arrow():
 	first_response = true
 	settled = false
-	var arrow_index = commands_list[command_index]
-	arrow_str = Global.commands[arrow_index]
+	var arrow_str = commands_list[command_index]
+	# arrow_str = Global.commands[arrow_index]
 	if arrow_str == "left":
 		curr_target = get_node("../Arrows/ArrowLeft")
 		target_angle = 3 * PI / 2

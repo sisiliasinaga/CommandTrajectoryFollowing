@@ -74,6 +74,7 @@ var curve4 = false
 var v_peaks = []
 var curr_v_peak = 0.0
 var curr_speed = 0.0
+var last_speed = -10.0
 # Speed dicts go time : speed in ms
 var v_speed_1 = {}
 var v_speed_2 = {}
@@ -147,18 +148,23 @@ func _process(delta):
 	curr_speed = sqrt(pow(curr_x_speed, 2) + pow(curr_y_speed, 2))
 	if curr_speed > curr_v_peak:
 		curr_v_peak = curr_speed
+	if last_speed < 0.0:
+		last_speed = curr_speed
 	
 	# Add to dict of speeds to eventually calculate jerks
-	if !path1:
-		v_speed_1[OS.get_ticks_msec()] = curr_speed
-	elif turn1 and !path2:
-		v_speed_2[OS.get_ticks_msec()] = curr_speed
-	elif turn2 and !path3:
-		v_speed_3[OS.get_ticks_msec()] = curr_speed
-	elif turn3 and !path4:
-		v_speed_4[OS.get_ticks_msec()] = curr_speed
-	elif turn4 and !curve4:
-		v_speed_curve[OS.get_ticks_msec()] = curr_speed
+	if abs(curr_speed - last_speed) >= 0.05:
+		if !path1:
+			v_speed_1[OS.get_ticks_msec()] = curr_speed
+			print("Current speed: ", curr_speed)
+		elif turn1 and !path2:
+			v_speed_2[OS.get_ticks_msec()] = curr_speed
+		elif turn2 and !path3:
+			v_speed_3[OS.get_ticks_msec()] = curr_speed
+		elif turn3 and !path4:
+			v_speed_4[OS.get_ticks_msec()] = curr_speed
+		elif turn4 and !curve4:
+			v_speed_curve[OS.get_ticks_msec()] = curr_speed
+		last_speed = curr_speed
 	
 	change_display_directions()
 	
@@ -364,13 +370,19 @@ func change_display_directions():
 			Global.avg_rot_speed /= avg_rot_speeds.size()
 			
 			# Average dlj's
-			Global.avg_stability = (dlj_1 + dlj_2 + dlj_3 + dlj_4) / 4
+			Global.avg_stability = dlj_1
 			
 			# SQL query
 			db.open_db()
+			
+			# Get number of existing trials for the given user ID
+			var user_trials = db.select_rows("UserSignalsTrajectory", "UserID = " + Global.user_ID, ["TrialID"])
+			# _trials = db.fetch_array("select * from UserSignalsCommand where UserID = '" + Global.user_ID + "'")
+			var user_trials_count = user_trials.size()
+			
 			var db_query = "insert into UserSignalsTrajectory (UserID, TrialID, nBB, tOB, PercentOB, avg_stability, avg_x_total, avg_y_total, avg_speed_total, avg_x_half1, avg_y_half1, avg_speed_half1, avg_x_half2, avg_y_half2, avg_speed_half2, avg_rot_total) values ('"
 			db_query += Global.user_ID + "', '"
-			db_query += Global.trial_ID + "', '"
+			db_query += str(user_trials_count) + "', '"
 			db_query += str(nBB) + "', '"
 			db_query += str(float(time_outside / 1000)) + "', '"
 			db_query += str(Global.percent_oob) + "', '"
@@ -424,7 +436,7 @@ func calc_abs_sq_jerks(accel_dict):
 	for time in accel_dict:
 		if !first_time:
 			curr_jerks = (accel_dict[time] - last_accel) / (float(time - last_time) / 1000)
-			jerks[time] = pow(abs(curr_jerks), 2)
+			jerks[time] = pow(curr_jerks, 2)
 		last_time = time
 		last_accel = accel_dict[time]
 		first_time = false
@@ -441,7 +453,7 @@ func calc_avg_stability(t_0, t_f, v_peak, jerks_dict):
 	var riemann_sum = 0.0
 	for time in jerks_dict:
 		if !first_time:
-			riemann_sum += (jerks_dict[time] + last_jerks) / 2 * (float(time - last_time) / 1000)
+			riemann_sum += (jerks_dict[time] + last_jerks) / 2 * (float(time - last_time) / 1000.0)
 		last_time = time
 		last_jerks = jerks_dict[time]
 		first_time = false
