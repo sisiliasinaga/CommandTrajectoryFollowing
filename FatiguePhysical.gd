@@ -39,4 +39,8 @@ func _on_HSlider5_value_changed(value):
 
 
 func _on_BackButton_pressed():
+	$NinePatchRect/VBoxContainer/ConfirmationDialog.popup_centered()
+
+
+func _on_ConfirmationDialog_confirmed():
 	get_tree().change_scene("res://Questionnaires.tscn")

@@ -273,9 +273,18 @@ margin_left = 188.0
 margin_right = 236.0
 margin_bottom = 20.0
 text = "Menu"
+
+[node name="ConfirmationDialog" type="ConfirmationDialog" parent="NinePatchRect/VBoxContainer"]
+margin_right = 330.0
+margin_bottom = 140.0
+rect_min_size = Vector2( 330, 140 )
+resizable = true
+dialog_text = "Are you sure you want to exit? Your current responses will not be saved."
+dialog_autowrap = true
 [connection signal="value_changed" from="NinePatchRect/VBoxContainer/HBoxContainer/HSlider6" to="." method="_on_HSlider6_value_changed"]
 [connection signal="value_changed" from="NinePatchRect/VBoxContainer/HBoxContainer3/HSlider7" to="." method="_on_HSlider7_value_changed"]
 [connection signal="value_changed" from="NinePatchRect/VBoxContainer/HBoxContainer5/HSlider8" to="." method="_on_HSlider8_value_changed"]
 [connection signal="pressed" from="NinePatchRect/VBoxContainer/HBoxContainer7/BackButton" to="." method="_on_BackButton_pressed"]
 [connection signal="button_up" from="NinePatchRect/VBoxContainer/HBoxContainer7/Button" to="." method="_on_Button_button_up"]
 [connection signal="pressed" from="NinePatchRect/VBoxContainer/HBoxContainer7/MenuButton" to="." method="_on_MenuButton_pressed"]
+[connection signal="confirmed" from="NinePatchRect/VBoxContainer/ConfirmationDialog" to="." method="_on_ConfirmationDialog_confirmed"]

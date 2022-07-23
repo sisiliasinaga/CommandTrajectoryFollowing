@@ -99,3 +99,15 @@ func _on_AcceptDialog_confirmed():
 
 func _on_InterfaceOptions_item_selected(index):
 	user_interface = index
+
+
+func _on_ClearButton_pressed():
+	$NinePatchRect/VBoxContainer/DataConfirmationDialog.popup_centered()
+
+
+func _on_DataConfirmationDialog_confirmed(user_id):
+	db.open_db()
+	db.query("delete from UserInfo where UserID == " + user_id)
+	db.query("delete from UserSignalsCommand where UserID == " + user_id)
+	db.query("delete from UserSignalsTrajectory where UserID == " + user_id)
+	$NinePatchRect/VBoxContainer/AcceptDialog3.popup_centered()

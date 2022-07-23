@@ -29,7 +29,7 @@ __meta__ = {
 margin_left = 35.0
 margin_top = 60.0
 margin_right = 368.0
-margin_bottom = 480.0
+margin_bottom = 476.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -422,6 +422,15 @@ margin_left = 168.0
 margin_right = 210.0
 margin_bottom = 20.0
 text = "Next"
+
+[node name="ConfirmationDialog" type="ConfirmationDialog" parent="NinePatchRect/VBoxContainer"]
+margin_top = 420.0
+margin_right = 333.0
+margin_bottom = 560.0
+rect_min_size = Vector2( 300, 140 )
+resizable = true
+dialog_text = "Are you sure you want to exit? Your current responses will not be saved."
+dialog_autowrap = true
 [connection signal="value_changed" from="NinePatchRect/VBoxContainer/HBoxContainer/HSlider1" to="." method="_on_HSlider1_value_changed"]
 [connection signal="value_changed" from="NinePatchRect/VBoxContainer/HBoxContainer10/HSlider2" to="." method="_on_HSlider2_value_changed"]
 [connection signal="value_changed" from="NinePatchRect/VBoxContainer/HBoxContainer12/HSlider3" to="." method="_on_HSlider3_value_changed"]
@@ -429,3 +438,4 @@ text = "Next"
 [connection signal="value_changed" from="NinePatchRect/VBoxContainer/HBoxContainer16/HSlider5" to="." method="_on_HSlider5_value_changed"]
 [connection signal="pressed" from="NinePatchRect/VBoxContainer/HBoxContainer2/BackButton" to="." method="_on_BackButton_pressed"]
 [connection signal="button_up" from="NinePatchRect/VBoxContainer/HBoxContainer2/NextButton" to="." method="_on_Button_button_up"]
+[connection signal="confirmed" from="NinePatchRect/VBoxContainer/ConfirmationDialog" to="." method="_on_ConfirmationDialog_confirmed"]

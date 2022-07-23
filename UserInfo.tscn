@@ -195,28 +195,28 @@ margin_right = 330.0
 margin_bottom = 342.0
 rect_min_size = Vector2( 0, 100 )
 
-[node name="MarginContainer3" type="MarginContainer" parent="NinePatchRect/VBoxContainer"]
+[node name="SubmitButton" type="Button" parent="NinePatchRect/VBoxContainer"]
 margin_top = 346.0
 margin_right = 330.0
 margin_bottom = 366.0
-rect_min_size = Vector2( 0, 20 )
-
-[node name="SubmitButton" type="Button" parent="NinePatchRect/VBoxContainer"]
-margin_top = 370.0
-margin_right = 330.0
-margin_bottom = 390.0
 text = "Submit"
 
 [node name="CancelButton" type="Button" parent="NinePatchRect/VBoxContainer"]
+margin_top = 370.0
+margin_right = 330.0
+margin_bottom = 390.0
+text = "Cancel"
+
+[node name="ClearButton" type="Button" parent="NinePatchRect/VBoxContainer"]
 margin_top = 394.0
 margin_right = 330.0
 margin_bottom = 414.0
-text = "Cancel"
+text = "Clear Data"
 
 [node name="ConfirmationDialog" type="ConfirmationDialog" parent="NinePatchRect/VBoxContainer"]
-margin_top = 226.0
+margin_top = 418.0
 margin_right = 330.0
-margin_bottom = 366.0
+margin_bottom = 558.0
 rect_min_size = Vector2( 300, 140 )
 window_title = "Please Confirm"
 resizable = true
@@ -224,17 +224,34 @@ dialog_text = "This User ID already exists. Are you sure that you would like to 
 dialog_autowrap = true
 
 [node name="AcceptDialog" type="AcceptDialog" parent="NinePatchRect/VBoxContainer"]
-margin_top = 226.0
+margin_top = 418.0
 margin_right = 330.0
-margin_bottom = 284.0
+margin_bottom = 476.0
 resizable = true
 dialog_text = "All fields must be filled in to submit user info."
 
 [node name="AcceptDialog2" type="AcceptDialog" parent="NinePatchRect/VBoxContainer"]
-margin_right = 83.0
-margin_bottom = 58.0
+margin_top = 418.0
+margin_right = 330.0
+margin_bottom = 544.0
 resizable = true
 dialog_text = "Inputted age must be in the form of an integer."
+dialog_autowrap = true
+
+[node name="DataConfirmationDialog" type="ConfirmationDialog" parent="NinePatchRect/VBoxContainer"]
+margin_right = 330.0
+margin_bottom = 140.0
+rect_min_size = Vector2( 330, 140 )
+resizable = true
+dialog_text = "Are you sure you want to clear existing data for this user? You will not be able to recover this data once this action has been completed."
+dialog_autowrap = true
+
+[node name="AcceptDialog3" type="AcceptDialog" parent="NinePatchRect/VBoxContainer"]
+margin_top = 418.0
+margin_right = 330.0
+margin_bottom = 476.0
+resizable = true
+dialog_text = "This user's data has been cleared."
 dialog_autowrap = true
 [connection signal="text_changed" from="NinePatchRect/VBoxContainer/HBoxContainer/UserIDText" to="." method="_on_UserIDText_text_changed"]
 [connection signal="toggled" from="NinePatchRect/VBoxContainer/HBoxContainer4/MaleCheckBox" to="." method="_on_MaleCheckBox_toggled"]
@@ -244,5 +261,7 @@ dialog_autowrap = true
 [connection signal="item_selected" from="NinePatchRect/VBoxContainer/HBoxContainer5/HandednessOptions" to="." method="_on_HandednessOptions_item_selected"]
 [connection signal="pressed" from="NinePatchRect/VBoxContainer/SubmitButton" to="." method="_on_SubmitButton_pressed"]
 [connection signal="pressed" from="NinePatchRect/VBoxContainer/CancelButton" to="." method="_on_CancelButton_pressed"]
+[connection signal="pressed" from="NinePatchRect/VBoxContainer/ClearButton" to="." method="_on_ClearButton_pressed"]
 [connection signal="confirmed" from="NinePatchRect/VBoxContainer/ConfirmationDialog" to="." method="_on_ConfirmationDialog_confirmed"]
 [connection signal="confirmed" from="NinePatchRect/VBoxContainer/AcceptDialog" to="." method="_on_AcceptDialog_confirmed"]
+[connection signal="confirmed" from="NinePatchRect/VBoxContainer/DataConfirmationDialog" to="." method="_on_DataConfirmationDialog_confirmed"]

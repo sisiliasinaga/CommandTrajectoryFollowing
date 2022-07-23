@@ -37,15 +37,15 @@ __meta__ = {
 }
 
 [node name="Label" type="Label" parent="NinePatchRect/VBoxContainer"]
-margin_right = 329.0
+margin_right = 330.0
 margin_bottom = 14.0
 text = "Menu"
 align = 1
 
 [node name="CommandButton" type="TextureButton" parent="NinePatchRect/VBoxContainer"]
-margin_left = 54.0
+margin_left = 55.0
 margin_top = 18.0
-margin_right = 274.0
+margin_right = 275.0
 margin_bottom = 73.0
 rect_min_size = Vector2( 220, 55 )
 size_flags_horizontal = 4
@@ -65,9 +65,9 @@ __meta__ = {
 }
 
 [node name="TrajectoryButton" type="TextureButton" parent="NinePatchRect/VBoxContainer"]
-margin_left = 54.0
+margin_left = 55.0
 margin_top = 77.0
-margin_right = 274.0
+margin_right = 275.0
 margin_bottom = 132.0
 rect_min_size = Vector2( 220, 55 )
 size_flags_horizontal = 4
@@ -87,9 +87,9 @@ __meta__ = {
 }
 
 [node name="UserResults" type="TextureButton" parent="NinePatchRect/VBoxContainer"]
-margin_left = 54.0
+margin_left = 55.0
 margin_top = 136.0
-margin_right = 274.0
+margin_right = 275.0
 margin_bottom = 191.0
 rect_min_size = Vector2( 220, 55 )
 size_flags_horizontal = 4
@@ -109,9 +109,9 @@ __meta__ = {
 }
 
 [node name="UserInfo" type="TextureButton" parent="NinePatchRect/VBoxContainer"]
-margin_left = 54.0
+margin_left = 55.0
 margin_top = 195.0
-margin_right = 274.0
+margin_right = 275.0
 margin_bottom = 250.0
 rect_min_size = Vector2( 220, 55 )
 size_flags_horizontal = 4
@@ -131,9 +131,9 @@ __meta__ = {
 }
 
 [node name="Questionnaires" type="TextureButton" parent="NinePatchRect/VBoxContainer"]
-margin_left = 54.0
+margin_left = 55.0
 margin_top = 254.0
-margin_right = 274.0
+margin_right = 275.0
 margin_bottom = 309.0
 rect_min_size = Vector2( 220, 55 )
 size_flags_horizontal = 4

@@ -36,4 +36,8 @@ func _on_BackButton_pressed():
 
 
 func _on_MenuButton_pressed():
+	$NinePatchRect/VBoxContainer/ConfirmationDialog.popup_centered()
+
+
+func _on_ConfirmationDialog_confirmed():
 	get_tree().change_scene("res://Questionnaires.tscn")
